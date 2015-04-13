@@ -1,0 +1,81 @@
+This file describes how to implement a c++ function in STAN.
+
+The function corresponds to the STAN function
+"""
+functions {
+    vector c_one(real a) {
+        vector[2] res;
+        res[1] <- 1.;
+        res[2] <- 0.;
+        return res;
+    }
+}
+"""
+
+The following example has been tested with CmdSTAN 2.5.0.
+
+1. The following file has been saved as 'meson_deca/lib/c_lib/c_func.hpp':
+"""
+#ifndef STAN__EXTERNAL__LIB__C_LIB__C_FUNC_HPP
+#define STAN__EXTERNAL__LIB__C_LIB__C_FUNC_HPP
+
+#include <stan/math/matrix/Eigen.hpp>
+#include <vector>
+
+namespace stan {
+  namespace math {
+    
+    using Eigen::Matrix; 
+    using std::vector;
+
+    /**
+     * vector c_one(scalar)
+     *
+     * Takes a scalar as an argument, returns the vector (1., 0.)
+     */
+    inline Eigen::Vector2d c_one(double d) {
+        return Eigen::Vector2d(1.0, 0.0);
+    }
+#endif
+"""
+
+2. The following line has been added to 'stan/src/stan/math/functions.hpp':
+"""
+#include <../../meson_deca/lib/c_lib/c_func.hpp>
+"""
+
+3. The following line has been added to 'stan/src/stan/math/functions.hpp':
+"""
+add("c_one, VECTOR_T, SCALAR_T");
+"""
+
+4. The STAN compiler has been rebuilt using 'make clean-all' in CmdSTAN folder.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

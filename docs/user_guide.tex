@@ -1,0 +1,167 @@
+\documentclass[a4paper]{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+
+\title{STAN module \texttt{meson_deca}}
+
+\author{A.~Tsipenyuk}
+
+\date{\today}
+
+\begin{document}
+
+
+
+\section{What do we want to do}
+
+A PWA model is described by a model function $f_{model}$, which often has
+the form:
+\begin{equation}\label{no1}
+f_{model}(y, \theta) = |\theta_1 * A_1(y) + \theta_2 * A_2(y) + ...|^2.
+\end{equation}
+where:
+$$
+y = (m^2_{ab}, m^2_{bc}, ...)
+$$
+is the set of variables describing an event. We call its length \texttt{NUM\_VAR} or \texttt{num\_variables()}. Further,
+$$
+\theta = (\theta_1, \theta_2, ...)
+$$
+is the set of parameters we intend to fit. Its length is called \texttt{NUM\_RES} or \texttt{num\_resonances()}, 
+since in the case described above \eqref{no1} it coincides with the number of PWA resonances $A_i$.\\
+\quad\\
+The intention of this module is
+\begin{itemize}
+\item[a)] to make a STAN model that takes parameter $\theta$ and then generates events $y_i = (m^2_{ab,i}, m^2_{bc,i}, ...)$; i.e., we sample $y$ over $f_{model}(y,\theta)$;
+\item[b)] to make a STAN model that takes many events $y_i$ as data and then fits the parameter $\theta$ to the data; i.e., we sample $\theta$ over $f_{model}(y,theta)/Norm(theta)$.
+\end{itemize}
+The function 
+$$
+Norm(\theta) = \int f_{model}(y,\theta)\, dy
+$$
+is the function that normalizes the PWA model function $f_{model}$ for different parameter values $\theta$.
+
+
+\section{How the model is implemented}
+\subsection{The model}
+The functions $f_{model}, A_{cv}=(A_1,A_2,\ldots),\, Norm()$ and the constants \texttt{NUM\_RES} and \texttt{NUM\_VAR} 
+are specified in the file \texttt{'lib/c\_lib/model.hpp'}. You must adjust these functions and constants to your PWA model. 
+(If your model is of the type \eqref{no1}, you only need to adjust $A_{cv}$ and the constants.
+The function $A_{cv}()$ returns a \underline{c}omplex \underline{v}ector; its elements are the PWA amplitudes.)
+
+\subsection{Complex numbers}
+Stan does not support complex numbers in its language. To work around that, we describe complex numbers as 2d arrays of real numbers;
+complex vectors as 2d arrays of real vectors, etc. Some common complex number operations are provided in the folder \texttt{'lib/c\_lib/complex/'}.
+
+\subsection{PWA library}
+There are some functions that often come up in PWA, such as Breit-Wigner or Flatte form factors, Zemach tensors, etc. Some of these
+functions are implemented in \texttt{'lib/c\_lib/fct'}.
+
+Sometimes it is useful to pack several constants (like masses or radii of the particles) into a structure (called particles) that can be
+used in code. Such objects are stored in \texttt{'lib/c\_lib/structures'}.
+
+\subsection{Python wrapper}
+C++ is, of course, a great language, but I just like to use python for some on-the-go visualizing of the programmed functions.
+The folder \texttt{'lib/c\_lib/py\_wrapper'} contains a wrapper for the function \texttt{A\_cv}. Call \texttt{python setup.py build}
+from this folder to assemble a python module 'lib/c\_lib/py\_wrapper/build/lib*/model.so'. To use the function from python, import this
+module and call something like \\
+\quad\\
+\texttt{
+\qquad >>> import sys\\
+\qquad >>> sys.path.insert(1,"<rel\_path\_to\_meson\_deca>/lib/c\_lib/py\_wrapper/build/lib*")\\
+\qquad >>> import model\\
+\qquad model.A\_cv(model.num\_variables(), y).\\
+}
+\quad\\
+You can convert this output to a user-friendlier form using module \texttt{lib/py\_lib/convert.py} by calling:\\
+\quad\\
+\texttt{
+\qquad >>> sys.path.insert(1,"<rel\_path\_to\_meson\_deca>/lib/py\_lib")\\
+\qquad >>> import convert\\
+\qquad >>> convert.ComplexVectorForm(model.A\_cv(model.num\_variables(), y)).\\
+}
+
+
+\section{How to set up STAN models}
+\subsection{Setting up}\label{setting_up}
+After we have adjusted the constants \texttt{NUM\_RES}, \texttt{NUM\_VAR}, and the function \texttt{A\_cv} (and, if necessary, \texttt{f\_model} and \texttt{Norm}), we want to assemble two STAN models to generate the data and to fit the data, respectively. The STAN
+files suited for such fitting are stored in \texttt{lib/stan\_lib}, called \texttt{STAN\_data\_generator.stan} and 
+\texttt{STAN\_amplitude\_fitting.stan}. Call the script
+\texttt{
+\quad\\
+\qquad ...\$ ./initialize\_model.sh FOLDER\_NAME 
+}
+\quad\\
+to copy these files into \texttt{models/FOLDER\_NAME}. The python wrapped \texttt{module.so} and a backup of \texttt{model.hpp} are copied into that folder as well. After that, it is necessary to adjust the files:
+\begin{itemize}
+\item[a)] STAN\_data\_generator.data.R - you MUST adjust the parameter $\theta$ which is used for generation of events $y_i$.
+\item[b)] STAN\_data\_generator.stan - you may adjust the boundary values of $y_i$ here (not necessary, but recommended).
+\item[c)] STAN\_amplitude\_fitting.stan - you MUST adjust which parameter $\theta_i$ is fixed (as the reference parameter) and which parameters are free. You may also adjust the boundary values of $\theta$ here.
+\end{itemize}
+
+\subsection{Specifics of the assumption \eqref{no1}}
+In the case when the function $f_{model}$ has the form specified in \eqref{no1}, the function
+$Norm$ can be rewritten in the following convenient form:
+\begin{align}
+Norm(\theta) &= \int f_{model}(y,\theta)\, dy = \int |\sum_{r=1}^{NUM_RES} \theta_r A_{cv,r}(y)|^2 dy \\
+&= \int \sum_{r,r'=1}^{NUM_RES} \theta_r A_{cv,r}(y) A^*_{cv,r'}(y) \theta^*_{r'} dy \\
+&= \sum_{r,r'=1}^{NUM_RES} \theta_r \theta^*_{r'} \underbrace{\int A_{cv,r}(y) A^*_{cv,r'}(y)\, dy}_{=:I_{rr'}}.\label{integrals}
+\end{align}
+With other words, the function $Norm(\theta)$ can be reformulated as a function $Norm(\theta, I_{rr'})$ with a
+pre-calculated matrix $I\in\mathbb R^{\mbox{\texttt{NUM\_RES}}\times \mbox{\texttt{NUM\_RES}}}$.
+
+This is precisely how the function $Norm$ is implemented in \texttt{model.hpp} by default. After the model is set up in 
+a folder as described above in Subsection \ref{setting_up}, it is necessary to call
+\texttt{
+\,\\
+\qquad ../meson\_deca/models/FOLDER\_NAME\$ ./../../utils/calculate\_normalization\_intergal.py y1\_min y1\_max y2\_min y2\_max <etc...>
+\,
+}
+This script, stored in \texttt{utils}, must be called from the model folder \texttt{FOLDER\_NAME} that contains a python module \texttt{model.so}. This script calculates the matrix $I$ and stores it in the file \texttt{normalization\_integral.py}; the 
+integrals in \eqref{integrals} are taken from \texttt{y1\_min} to \texttt{y1\_max}, from \texttt{y2\_min} to \texttt{y2\_max}, etc., 
+respectively.
+
+
+
+\section{How to sample using STAN models}
+To build the STAN models into executables, call
+\texttt{
+\,\\
+\qquad ../cmdstan-2.6.2\$ make meson\_deca/models/FOLDER\_NAME/STAN\_data\_generator
+\qquad ../cmdstan-2.6.2\$ make meson\_deca/models/FOLDER\_NAME/STAN\_amplitude\_fitting
+\,
+}
+from the CmdStan folder, or, alternatively, call
+\texttt{
+\,\\
+\qquad ../meson\_deca/models/FOLDER\_NAME\$ ./../../build.sh
+\,
+}
+(you may also call ./../../clean.sh in case you need to delete the executables 
+STAN\_data\_generator and STAN\_amplitude\_fitting).
+
+After that, you may call the scripts
+\texttt{
+\,\\
+\qquad ../meson\_deca/models/FOLDER\_NAME\$ ./../../generate.sh 10000
+\qquad ../meson\_deca/models/FOLDER\_NAME\$ ./../../fit.sh 1000
+\,
+}
+to generate 10000 events $y_i$ and then to sample the distribution of the
+parameter $\theta$ 1000 times. If everything works correctly, the posterior
+distribution of $\theta$ should have peaks at the values specified in
+$STAN_data_generator.data.R$.
+
+After you have made sure that everything works,
+you can fit $\theta$ for some real events $y_i$. Assume that the 
+\texttt{.root} file with your events is stored in \texttt{\$FOLDER/my\_data.root},
+and the trees containing data are called 'y.1', 'y.2', etc.
+
+Call \texttt{utils/data\_analysis\_\_root\_to\_dataR.py my\_data.root STAN\_amplitude\_fitting.data.R}
+to convert the events $y_i$ to $A_{cv}(y_i)$ and to save them as STAN data file. After that,
+use \texttt{STAN\_amplitude\_fitting sample data file=STAN\_amplitude\_fitting.data.R} 
+to generate the samples. 
