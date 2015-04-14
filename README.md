@@ -31,7 +31,7 @@ Reminder: the core Stan C++ code and CmdStan are licensed under new BSD.
 (You may want to read `docs/user_guide.pdf` first to get acquainted with the
 notation.)
 
-# Model
+#### Model
 This example shows how to use meson_deca to model a decay D->pi+pi-pi+
 via two toy resonances f_0(1000) and f_0(1200). Consider the following
 model function:
@@ -57,14 +57,14 @@ a complex number.
 4) The resonances are bundled together in the function A_cv, which returns
 the complex vector (A_1, A_2, ..., A_NUM_RES).
 
-# Goal
+#### Goal
 First, we want to fix theta = (theta_1_init, theta_2_init, 0) and generate 
 10000 events {y_i} according to our model. Then, we want to use the 
 generated data to sample the complex parameter theta_2 (the parameter 
 theta_1 = theta_1_init remains fixed as reference parameter). The result 
 of this sampling should be sharpely peaked around the value theta_2_init.
 
-# Code
+#### Code
 
 Copy pre-build STAN files into a new folder bw2_example and 
 wrap model to a python module. (Some warnings may be casted; but
