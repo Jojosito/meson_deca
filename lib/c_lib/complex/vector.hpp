@@ -26,16 +26,13 @@ namespace complex {
      * of vectors - 1st element of the array is the real part of the complex 
      * vector, 2nd element is the imag. part of the complex vector).
      *
-     * CAVEAT. Both complex vectors MUST have the same underlying scalar type.
-     * This function should probably be rewritten in a generalized way.
-     *
      * @tparam T Scalar vector type
      */
-    template <typename T>
+    template <typename T0, typename T1>
     inline
-    std::vector<Eigen::Matrix<T,Eigen::Dynamic,1> >
-    cv_mult(const std::vector<Eigen::Matrix<T,Eigen::Dynamic,1> > &v1, 
-            const std::vector<Eigen::Matrix<T,Eigen::Dynamic,1> > &v2) {
+    std::vector<Eigen::Matrix<typename boost::math::tools::promote_args<T0,T1>::type, Eigen::Dynamic, 1> >
+    mult(const std::vector<Eigen::Matrix<T0,Eigen::Dynamic,1> > &v1, 
+            const std::vector<Eigen::Matrix<T1,Eigen::Dynamic,1> > &v2) {
 
         // check size of v1 and v2
         int v_len = v1[0].rows();
@@ -43,7 +40,8 @@ namespace complex {
             std::cout << "Arugment size mismatch in complex::vector::mult.";
         }
 
-        std::vector<Eigen::Matrix<T, Eigen::Dynamic, 1> > res(2, (Eigen::Matrix<T, Eigen::Dynamic, 1> (v_len)));
+	typedef typename boost::math::tools::promote_args<T0,T1>::type T_res;
+        std::vector<Eigen::Matrix<T_res, Eigen::Dynamic, 1> > res(2, (Eigen::Matrix<T_res, Eigen::Dynamic, 1> (v_len)));
         for (int i = 0; i < v_len; i++) {
             res[0](i) = v1[0](i) * v2[0](i) - v1[1](i) * v2[1](i);
             res[1](i) = v1[0](i) * v2[1](i) + v1[1](i) * v2[0](i);
@@ -61,7 +59,7 @@ namespace complex {
      */
     template <typename T>
     inline
-    std::vector<T> cv_sum(const std::vector<Eigen::Matrix<T,Eigen::Dynamic,1> > &v) {
+    std::vector<T> sum(const std::vector<Eigen::Matrix<T,Eigen::Dynamic,1> > &v) {
 
         std::vector<T> res(2);
         res[0] = 0.0;

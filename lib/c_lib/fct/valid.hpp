@@ -3,7 +3,7 @@
 
 #include <cmath> // sqrt
 
-#include <meson_deca/lib/c_lib/constants/struct_particles.hpp> 
+#include <meson_deca/lib/c_lib/structures/struct_particles.hpp> 
 // class particle
 
 namespace fct {

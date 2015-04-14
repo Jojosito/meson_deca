@@ -13,6 +13,7 @@
  *
  *  FUNCTIONS
  *    complex_scalar abs2(complex_scalar)
+ *    complex_scalar add(complex_scalar, complex_scalar)
  *    complex_scalar complex(scalar, scalar)
  *    complex_scalar inverse(complex_scalar)
  *    complex_scalar one(scalar)
@@ -36,6 +37,25 @@ namespace complex {
     inline T
     abs2(const std::vector<T> &v) {
         return v[0] * v[0] + v[1] * v[1];
+    }
+
+
+    /**
+     * complex_scalar add(complex_scalar, complex_scalar)
+     *
+     * Sum of two complex numbers.
+     *
+     * @tparam T Scalar type
+     */
+    template <typename T0, typename T1>
+    inline
+    std::vector<typename boost::math::tools::promote_args<T0,T1>::type> 
+    add(const std::vector<T0> &v1, const std::vector<T1> &v2) {
+        typedef typename boost::math::tools::promote_args<T0,T1>::type T_res;
+        std::vector<T_res> res(2);
+        res[0] = v1[0] + v2[0];
+        res[1] = v1[1] + v2[1];
+        return res;
     }
 
 

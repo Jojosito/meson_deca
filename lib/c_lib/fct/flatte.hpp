@@ -4,7 +4,7 @@
 #include <vector>
 #include <cmath>
 
-#include <meson_deca/lib/c_lib/constants/particles.hpp> // particles::pi, k
+#include <meson_deca/lib/c_lib/structures/particles.hpp> // particles::pi, k
 #include <meson_deca/lib/c_lib/fct/breakup_momentum.hpp> // breakup_momentum::complex_p
 #include <meson_deca/lib/c_lib/complex.hpp>
 

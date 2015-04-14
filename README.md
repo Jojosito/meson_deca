@@ -15,10 +15,16 @@ Reminder: the core Stan C++ code and CmdStan are licensed under new BSD.
 ### Installation
 
 1. Install the latest CmdStan release (current support: 2.6.2).
-  1a. Download CmdStan from [https://github.com/stan-dev/cmdstan/releases](https://github.com/stan-dev/cmdstan/releases).
-  1b. Unpack the tarball.
-  1c. From the CmdStan folder, run 'make' on brief tutorial.
 
-2a. Clone the meson_deca into the CmdStan folder (type something like `git clone https://github.com/atsipenyuk/meson_deca.git`).
+1a. Download CmdStan from [https://github.com/stan-dev/cmdstan/releases](https://github.com/stan-dev/cmdstan/releases).
 
-2b. Run `make install` from the meson_deca folder.
+1b. Unpack the tarball.
+
+1c.(Optional) From the CmdStan folder, run 'make' on brief tutorial.
+
+2a. From the CmdStan folder, git clone the meson_deca  (type something like `git clone https://github.com/atsipenyuk/meson_deca.git`).
+
+2b. Run `make -s install` from the meson_deca folder.
+
+### Example
+

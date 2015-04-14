@@ -31,15 +31,15 @@ cd $MESON_DECA
 mkdir -p models/$MODEL_FOLDER
 mkdir -p models/$MODEL_FOLDER/backup
 cp $MESON_DECA/lib/stan_lib/* $MESON_DECA/models/$MODEL_FOLDER
-cp $MESON_DECA/lib/c_lib/model.hpp $MESON_DECA/models/$MODER_FOLDER/backup/model.hpp
+cp $MESON_DECA/lib/c_lib/model.hpp $MESON_DECA/models/$MODEL_FOLDER/backup/model.hpp
 
 # Build python library containing model description
 echo "#### MESON_DECA: Building python modules..."
-cd "$MESON_DECA/lib/c_lib"
+cd "$MESON_DECA/lib/c_lib/py_wrapper"
 python setup.py build
 
 # Copy it to the model directory
-cp "$MESON_DECA"/lib/c_lib/build/lib*/model.so "$MESON_DECA/models/$MODEL_FOLDER"
+cp "$MESON_DECA"/lib/c_lib/py_wrapper/build/lib*/model.so "$MESON_DECA/models/$MODEL_FOLDER"
 
 # DEPRECATED. Explicit is better than implicit - let the user calculate the
 # integrals.

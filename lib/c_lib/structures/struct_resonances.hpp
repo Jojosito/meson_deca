@@ -79,7 +79,8 @@ namespace resonances {
               const particle &p, const particle &a, 
 	      const particle &b, const particle &c) {
 
-      return this->value(m2_ab, m2_bc, p, a, b, e) + this->value(m2_bc, m2_ab, p, a, b, c);
+      return complex::scalar::add(this->value(m2_ab, m2_bc, p, a, b, c),
+				  this->value(m2_bc, m2_ab, p, a, b, c));
     }
 
   };
@@ -138,7 +139,8 @@ namespace resonances {
               const particle &p, const particle &a, 
 	      const particle &b, const particle &c) {
 
-      return this->value(m2_ab, m2_bc, p, a, b, c) + this->value(m2_bc, m2_ab, p, a, b, c));
+      return complex::scalar::add(this->value(m2_ab, m2_bc, p, a, b, c),
+				  this->value(m2_bc, m2_ab, p, a, b, c));
     }
 
   };
