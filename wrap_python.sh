@@ -17,8 +17,8 @@ MODEL_FOLDER=$(pwd)
 cdmeson_deca
 MESON_DECA=$(pwd)
 
-cd "$MESON_DECA/lib/c_lib"
+cd "$MESON_DECA/lib/c_lib/py_wrapper"
 rm -r build
 python setup.py build
-cp "$MESON_DECA"/lib/c_lib/build/lib*/model.so "$MODEL_FOLDER"
+cp "$MESON_DECA"/lib/c_lib/py_wrapper/build/lib*/model.so "$MODEL_FOLDER"
 cd "$MODEL_FOLDER"

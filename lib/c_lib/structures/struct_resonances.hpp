@@ -20,7 +20,6 @@ namespace resonances {
       J(_J), M(_M), M2(_M*_M), R(_R), R2(_R*_R) {};
   };
 
-
   struct breit_wigner : resonances::reson_base // Breit-Wigner resonance
   {
     const double W; // Width
@@ -83,6 +82,28 @@ namespace resonances {
 				  this->value(m2_bc, m2_ab, p, a, b, c));
     }
 
+  };
+
+
+  struct flat // Non-resonant (flat) resonance
+  {    
+    double dummy_member; // I don't know, but without members
+    // that does not compile. C++ is hard.
+
+    flat(double dummy) : dummy_member(dummy) {}; // Constructor
+
+    template <typename T>
+    std::vector<T>
+    value(const T& m2_ab, const T& m2_bc,
+          const particle &p, const particle &a, 
+          const particle &b, const particle &c) {
+
+      std::vector<T> res(2, 0.0);
+      if (fct::valid(m2_ab, m2_bc, p, a, b, c) == true) {
+	res[0] = 1.0;
+      }
+      return res;
+    }
   };
 
 

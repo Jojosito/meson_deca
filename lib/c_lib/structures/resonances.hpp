@@ -11,6 +11,8 @@ namespace resonances {
 
   //resonance.non_resonant d_3pi_flat(1.36, 150.1*deg);
 
+  resonances::flat flat_res(0.0);
+
   resonances::breit_wigner toy0_1000(0, 1.,
                                    0.1,
                                    1.0);
@@ -18,6 +20,10 @@ namespace resonances {
   resonances::breit_wigner toy0_1200(0, 1.2,
                                    0.1,
                                    1.0);
+
+  resonances::flatte toy0_flatte(0, 1.,
+				 0.329, 2*0.329,
+				 1.1);
 
   resonances::flatte f0_980(0, 0.980, // Spin, mass
                           0.329, 2*0.329, // Width

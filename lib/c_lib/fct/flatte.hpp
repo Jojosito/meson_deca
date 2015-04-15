@@ -31,22 +31,25 @@ namespace fct {
       typedef typename boost::math::tools::promote_args<T0,T1,T2,T3>::type T_res;
       std::vector<T_res> pp(2);
       std::vector<T_res> kk(2);
+      std::vector<T_res> temp(2);
       pp = complex::scalar::complex(gpp * gpp, 0.0);
       kk = complex::scalar::complex(gkk * gkk, 0.0);
 
       pp = complex::scalar::mult(pp,
-                                 fct::breakup_momentum::complex_p(m2_ab, particles::pi.m, 
-					                          particles::pi.m));
+             fct::breakup_momentum::complex_p(m2_ab, particles::pi.m, 
+					      particles::pi.m));
 
       kk = complex::scalar::mult(kk,
-                                 fct::breakup_momentum::complex_p(m2_ab, particles::k.m,
-				                                  particles::k.m));
+             fct::breakup_momentum::complex_p(m2_ab, particles::k.m,
+					      particles::k.m));
+     
+      temp = complex::scalar::mult(complex::scalar::complex(0.0, 1.0), 
+				   complex::scalar::add(pp,kk));
 
-      std::vector<T_res> imag_unit;
-      imag_unit = complex::scalar::complex(0.0, 1.0);
-      return complex::scalar::complex(M_R*M_R - m2_ab, 0) - 
-	     complex::scalar::mult(2. / sqrt(m2_ab),
-                                   complex::scalar::mult(imag_unit, pp + kk));
+      return complex::scalar::subtract(
+	complex::scalar::complex(M_R*M_R - m2_ab, 0.0), 
+	complex::scalar::mult(complex::scalar::complex(2. / sqrt(m2_ab),0.0),
+			      temp));
     }
   }
 }
