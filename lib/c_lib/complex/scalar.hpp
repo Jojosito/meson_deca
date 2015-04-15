@@ -66,15 +66,17 @@ namespace complex {
      * Complex number constructor.
      * Takes two scalars a,b returns the vector (a, b).
      *
-     * @tparam T Scalar type
+     * @tparam T0, T1 Scalar type
      */
-    template <typename T>
+    template <typename T0, typename T1>
     inline
-    std::vector<T> complex(const T& re, const T& im) {
-        std::vector<T> res(2);
-        res[0] = re;
-        res[1] = im;
-        return res;
+    std::vector<typename boost::math::tools::promote_args<T0,T1>::type>
+    complex(const T0& re, const T1& im) {
+      typedef typename boost::math::tools::promote_args<T0,T1>::type T_res;
+      std::vector<T_res> res(2);
+      res[0] = re;
+      res[1] = im;
+      return res;
     }
 
 

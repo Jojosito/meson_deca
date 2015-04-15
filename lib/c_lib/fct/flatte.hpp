@@ -32,14 +32,12 @@ namespace fct {
       std::vector<T_res> pp(2);
       std::vector<T_res> kk(2);
       std::vector<T_res> temp(2);
-      pp = complex::scalar::complex(gpp * gpp, 0.0);
-      kk = complex::scalar::complex(gkk * gkk, 0.0);
 
-      pp = complex::scalar::mult(pp,
+      pp = complex::scalar::mult(complex::scalar::complex(gpp * gpp, 0.0),
              fct::breakup_momentum::complex_p(m2_ab, particles::pi.m, 
 					      particles::pi.m));
 
-      kk = complex::scalar::mult(kk,
+      kk = complex::scalar::mult(complex::scalar::complex(gkk * gkk, 0.0),
              fct::breakup_momentum::complex_p(m2_ab, particles::k.m,
 					      particles::k.m));
      
