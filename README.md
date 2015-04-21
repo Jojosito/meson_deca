@@ -9,8 +9,8 @@ Reminder: the core Stan C++ code and CmdStan are licensed under new BSD.
 
 ### Dependencies
 
-* libboost-python-dev
-* PyROOT
+* libboost-python-dev (`sudo apt-get install libboost-python-dev` or similar should do the trick);
+* PyROOT (you should be able to call `import ROOT` from python shell).
 
 ### Installation
 
