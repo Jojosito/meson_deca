@@ -34,14 +34,14 @@ namespace stan {
         switch (res_id) {
 	// This resonance list must be adjusted manually
         case 1: /*return complex::scalar::complex(0*y(0,0), 0*y(1,0));*/
-	  return resonances::toy0_1000.value(y(0,0), y(1,0),
+	  return resonances::toy0_1000.value_sym(y(0,0), y(1,0),
 						       particles::d,
 						       particles::pi,
 						       particles::pi,
 						       particles::pi);
 	  
         case 2:  /*return complex::scalar::complex(y(1,0), 0*y(1,0));*/
-	   return resonances::toy0_1200.value(y(0,0), y(1,0),
+	   return resonances::toy0_1200.value_sym(y(0,0), y(1,0),
 						       particles::d,
 						       particles::pi,
 						       particles::pi,
