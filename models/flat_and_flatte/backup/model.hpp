@@ -45,7 +45,7 @@ namespace stan {
 						       particles::pi);*/
 	  
         case 2:  /*return complex::scalar::complex(y(1,0), 0*y(1,0));*/
-	   return resonances::toy0_flatte.value(y(0,0), y(1,0),
+	   return resonances::toy0_flatte.value_sym(y(0,0), y(1,0),
 						       particles::d,
 						       particles::pi,
 						       particles::pi,

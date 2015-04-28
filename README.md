@@ -9,8 +9,8 @@ Reminder: the core Stan C++ code and CmdStan are licensed under new BSD.
 
 ### Dependencies
 
-* libboost-python-dev
-* PyROOT
+* libboost-python-dev (`sudo apt-get install libboost-python-dev` or similar should do the trick);
+* PyROOT (you should be able to call `import ROOT` from python shell).
 
 ### Installation
 
@@ -62,9 +62,11 @@ of this sampling should be sharpely peaked around the value `theta_2_init`.
 
 Copy pre-build STAN files into a new folder bw2_example and 
 wrap model to a python module. (Some warnings may be casted, but
-no errors should occur.)  
+no errors should occur. NOTE: the code is wrapped to a python
+module using `clang++`. If you would like to use `g++`, adjust the file
+`meson_deca/lib/c_lib/py_wrapper/setup.py`)  
   
-`../meson_deca $ ./initialize_model bw2_example`  
+`../meson_deca $ ./initialize_model.sh bw2_example`  
 `../meson_deca $ cd models/bw2_example`  
   
 Build the STAN files into executables.  
