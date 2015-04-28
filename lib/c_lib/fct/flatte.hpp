@@ -44,10 +44,11 @@ namespace fct {
       temp = complex::scalar::mult(complex::scalar::complex(0.0, 1.0), 
 				   complex::scalar::add(pp,kk));
 
-      return complex::scalar::subtract(
+      return complex::scalar::inverse(
+        complex::scalar::subtract(
 	complex::scalar::complex(M_R*M_R - m2_ab, 0.0), 
 	complex::scalar::mult(complex::scalar::complex(2. / sqrt(m2_ab),0.0),
-			      temp));
+			      temp)));
     }
   }
 }

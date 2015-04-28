@@ -21,5 +21,5 @@ cd $MODEL_DIR
 # (Sample 4 chains)
 for i in {1..3}
 do
-  ./STAN_amplitude_fitting sample id=$i data file=STAN_amplitude_fitting.data.R output file=output$i.csv & #init=STAN_data_generator.data.R
+  ./STAN_amplitude_fitting sample id=$i data file=STAN_amplitude_fitting.data.R output file=output$i.csv & init=STAN_data_generator.data.R
 done

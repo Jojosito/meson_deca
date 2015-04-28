@@ -11,7 +11,7 @@
 
 
 // These variables should be adjusted manually
-const int NUM_RES=3; // Number of PWA resonances
+const int NUM_RES=7; // Number of PWA resonances
 const int NUM_VAR=2; // Number of independent masses (e.g., 2 for 3-body-decay)
 
 namespace stan {
@@ -33,21 +33,26 @@ namespace stan {
 
         switch (res_id) {
 	// This resonance list must be adjusted manually
-        case 1: /*return complex::scalar::complex(0*y(0,0), 0*y(1,0));*/
-	  return resonances::toy0_1000.value(y(0,0), y(1,0),
-						       particles::d,
-						       particles::pi,
-						       particles::pi,
-						       particles::pi);
+        case 1: return resonances::flat_res.value(y(0,0), y(1,0), 
+	  particles::d, particles::pi, particles::pi, particles::pi);
 	  
-        case 2:  /*return complex::scalar::complex(y(1,0), 0*y(1,0));*/
-	   return resonances::toy0_1200.value(y(0,0), y(1,0),
-						       particles::d,
-						       particles::pi,
-						       particles::pi,
-						       particles::pi);
+        case 2: return resonances::f0_980.value_sym(y(0,0), y(1,0),
+	  particles::d, particles::pi, particles::pi, particles::pi);
 
-        case 3: return complex::scalar::one(y(0,0));
+        case 3: return resonances::f0_600.value_sym(y(0,0), y(1,0),
+	  particles::d, particles::pi, particles::pi, particles::pi);
+
+        case 4: return resonances::f0_1370.value_sym(y(0,0), y(1,0),
+	  particles::d, particles::pi, particles::pi, particles::pi);
+
+        case 5: return resonances::f0_1500.value_sym(y(0,0), y(1,0),
+	  particles::d, particles::pi, particles::pi, particles::pi);
+
+        case 6: return resonances::rho_770.value_sym(y(0,0), y(1,0),
+	  particles::d, particles::pi, particles::pi, particles::pi);
+
+        case 7: return resonances::f2_1270.value_sym(y(0,0), y(1,0),
+	  particles::d, particles::pi, particles::pi, particles::pi);
 
         default: {
             std::cout << "Fatal error: Unknown resonance occured.";

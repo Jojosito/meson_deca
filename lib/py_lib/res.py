@@ -69,31 +69,36 @@ def H2_playground(m2_ab, m2_bc, A_m_diff, A_ph_diff):
 #    return abs(f_0_980(m2_ab, m2_bc) + f_0_980(m2_bc, m2_ab)) ** 2
 
 
-#def f_0_980(m2_ab, m2_bc):
+def f_0_980(m2_ab, m2_bc):
 
-#    if Valid(m2_ab, m2_bc, pwamath.m2_d, pwamath.m2_pi):
-#        
-#        m_ab = np.sqrt(m2_ab)
-#        F_D = F(f_0_980.J, pwamath.r2_d, pwamath.m2_d, m_ab, pwamath.m_pi)/ \
-#             F(f_0_980.J, pwamath.r2_d, pwamath.m2_d, f_0_980.M, pwamath.m_pi)
-#
-#        F_R = F(f_0_980.J, f_0_980.r2, m2_ab, pwamath.m_pi)/ \
-#              F(f_0_980.J, f_0_980.r2, f_0_980.M ** 2, pwamath.m_pi)
-#
-#        T = Flatte(f_0_980.M, m2_ab ,f_0_980.gpp, f_0_980.gkk)
-#
-#        Zemach = W(f_0_1370.J, m2_ab, m2_bc, pwamath.m2_d, pwamath.m2_pi)
-#
-#        return f_0_980.a * F_D * F_R * T * Zemach
-#    return 0
+    if fct.valid(m2_ab, m2_bc, particles.m2_d, particles.m2_pi):
+        
+        m_ab = np.sqrt(m2_ab)
+        F_D = fct.blatt_weisskopf(f_0_980.J, particles.r2_d, particles.m2_d, 
+                                  m_ab, particles.m_pi)/ \
+              fct.blatt_weisskopf(f_0_980.J, particles.r2_d, particles.m2_d,
+                                 f_0_980.M, particles.m_pi)
 
-#f_0_980.J = 0
-#f_0_980.M = 0.980
-#f_0_980.gpp = 0.329
-#f_0_980.gkk = 2. * 0.329
-#f_0_980.a = 1.4 * np.exp(1j * (12) / 180 * np.pi)
-#f_0_980.r = 1.
-#f_0_980.r2 = f_0_980.r ** 2;
+        F_R = fct.blatt_weisskopf(f_0_980.J, f_0_980.r2, m2_ab, 
+                                  particles.m_pi)/ \
+              fct.blatt_weisskopf(f_0_980.J, f_0_980.r2, f_0_980.M ** 2,
+                                  particles.m_pi)
+
+        T = fct.flatte(f_0_980.M, m2_ab ,f_0_980.gpp, f_0_980.gkk)
+
+        Zemach = fct.zemach(f_0_980.J, m2_ab, m2_bc, particles.m2_d, 
+                            particles.m2_pi)
+
+        return f_0_980.a * F_D * F_R * T * Zemach
+    return 0
+
+f_0_980.J = 0
+f_0_980.M = 0.980
+f_0_980.gpp = 0.329
+f_0_980.gkk = 2. * 0.329
+f_0_980.a = 1.4 * np.exp(1j * (12) / 180 * np.pi)
+f_0_980.r = 1.
+f_0_980.r2 = f_0_980.r ** 2;
 
 
 
@@ -104,21 +109,21 @@ def H2_playground(m2_ab, m2_bc, A_m_diff, A_ph_diff):
 
 #def f_2_1270(m2_ab, m2_bc):
 
-#    if Valid(m2_ab, m2_bc, pwamath.m2_d, pwamath.m2_pi):
+#    if Valid(m2_ab, m2_bc, particles.m2_d, particles.m2_pi):
         
 #        m_ab = np.sqrt(m2_ab)
-#        F_D = F(f_2_1270.J, pwamath.r2_d, pwamath.m2_d, m_ab, pwamath.m_pi)/ \
-#             F(f_2_1270.J, pwamath.r2_d, pwamath.m2_d, f_2_1270.M, pwamath.m_pi)
+#        F_D = F(f_2_1270.J, particles.r2_d, particles.m2_d, m_ab, particles.m_pi)/ \
+#             F(f_2_1270.J, particles.r2_d, particles.m2_d, f_2_1270.M, particles.m_pi)
 
-#       F_R = F(f_2_1270.J, f_2_1270.r2, m2_ab, pwamath.m_pi)/ \
-#             F(f_2_1270.J, f_2_1270.r2, f_2_1270.M ** 2, pwamath.m_pi)
+#       F_R = F(f_2_1270.J, f_2_1270.r2, m2_ab, particles.m_pi)/ \
+#             F(f_2_1270.J, f_2_1270.r2, f_2_1270.M ** 2, particles.m_pi)
 #
 #        width = rBW_width(f_2_1270.M, f_2_1270.W, f_2_1270.J, f_2_1270.r, m2_ab)
 #        T = BW(f_2_1270.M, m2_ab, width)
 
-#        Zemach = W(f_2_1270.J, m2_ab, m2_bc, pwamath.m2_d, pwamath.m2_pi)
+#        Zemach = W(f_2_1270.J, m2_ab, m2_bc, particles.m2_d, particles.m2_pi)
 
-#        return  F_R#F(f_2_1270.J, pwamath.r2_d, pwamath.m2_d, m_ab, pwamath.m_pi)#F_R#f_2_1270.a * Zemach# * F_D * F_R = *math.r2_d, pwamath.m2_d, m_ab, pwamath.m_pi) T * Zemach 
+#        return  F_R#F(f_2_1270.J, particles.r2_d, particles.m2_d, m_ab, particles.m_pi)#F_R#f_2_1270.a * Zemach# * F_D * F_R = *math.r2_d, particles.m2_d, m_ab, particles.m_pi) T * Zemach 
 #    return 0
 
 
@@ -143,19 +148,19 @@ def H2_playground(m2_ab, m2_bc, A_m_diff, A_ph_diff):
 
 #def f_0_1500(m2_ab, m2_bc):
 
-#    if Valid(m2_ab, m2_bc, pwamath.m2_d, pwamath.m2_pi):
+#    if Valid(m2_ab, m2_bc, particles.m2_d, particles.m2_pi):
         
 #        m_ab = np.sqrt(m2_ab)
-#        F_D = F(f_0_1500.J, pwamath.r2_d, pwamath.m2_d, m_ab, pwamath.m_pi)/ \
-#             F(f_0_1500.J, pwamath.r2_d, pwamath.m2_d, f_0_1500.M, pwamath.m_pi)
+#        F_D = F(f_0_1500.J, particles.r2_d, particles.m2_d, m_ab, particles.m_pi)/ \
+#             F(f_0_1500.J, particles.r2_d, particles.m2_d, f_0_1500.M, particles.m_pi)
 #
-#        F_R = F(f_0_1500.J, f_0_1500.r2, m2_ab, pwamath.m_pi)/ \
-#              F(f_0_1500.J, f_0_1500.r2, f_0_1500.M ** 2, pwamath.m_pi)
+#        F_R = F(f_0_1500.J, f_0_1500.r2, m2_ab, particles.m_pi)/ \
+#              F(f_0_1500.J, f_0_1500.r2, f_0_1500.M ** 2, particles.m_pi)
 #
 #        width = rBW_width(f_0_1500.M, f_0_1500.W, f_0_1500.J, f_0_1500.r, m2_ab)
 #        T = BW(f_0_1500.M, m2_ab, width)
 
-#        Zemach = W(f_0_1500.J, m2_ab, m2_bc, pwamath.m2_d, pwamath.m2_pi)
+#        Zemach = W(f_0_1500.J, m2_ab, m2_bc, particles.m2_d, particles.m2_pi)
 
 #        return f_0_1500.a * F_D * F_R * T * Zemach
 #    return 0

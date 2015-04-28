@@ -113,9 +113,9 @@ def flatte(M, m2, gpp, gkk):
     gpp : phase-space factor * coupling constant^2 of the channel -> pi + pi 
     gkk : - // -                                   of the cahnnel -> K + K
     """
-    pp = gpp * gpp * breakup_momentum_complex_p(m2, pwamath.m_pi, pwamath.m_pi)
-    kk = gkk * gkk * breakup_momentum_complex_p(m2, pwamath.m_k, pwamath.m_k)
-    return ((M*M - m2) - (2. / np.sqrt(m2)) * 1j * (pp + kk))
+    pp = gpp * gpp * breakup_momentum_complex_p(m2, particles.m_pi, particles.m_pi)
+    kk = gkk * gkk * breakup_momentum_complex_p(m2, particles.m_k, particles.m_k)
+    return 1./((M*M - m2) - (2. / np.sqrt(m2)) * 1j * (pp + kk))
 
 
 def relativistic_breit_wigner_width(M_R, W_R, J_R, r_R, m2_ab, m_a, m_b=-1):
