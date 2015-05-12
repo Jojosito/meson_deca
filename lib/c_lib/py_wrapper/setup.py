@@ -6,8 +6,8 @@ from distutils.extension import Extension
 
 # Switch between g++/clang++ by altering
 # the next two lines
-os.environ["CC"] = "g++"
-os.environ["CXX"] = "g++"
+os.environ["CC"] = "clang++"
+os.environ["CXX"] = "clang++"
 
 # set cmdstan directory (as the first directory containing '/meson_deca/')
 cmdstan_path = os.getcwd()

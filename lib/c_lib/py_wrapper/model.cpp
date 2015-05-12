@@ -16,11 +16,14 @@ namespace stan {
      *
      * Argument wrapper for the function A_cv to call A_cv from python.
      *
-     * We need to convert python list to Eigen::Matrix, pass it as an argument 
-     * to A_cv, and then convert the result back to some pythonian type. 
+     * We need to convert python list to Eigen::Matrix, pass it as an 
+     * argument to A_cv, and then convert the result back to some 
+     * pythonian type.
+     *
+     *
      * Boost::Python can convert std::vector's to Python; more explicitely
-     * - to some python class; in our case, this class is specified further below
-     *  and it is called StdVrDouble.
+     * - to some python class; in our case, this class is specified further 
+     * below and it is called StdVrDouble.
      */
 
      inline

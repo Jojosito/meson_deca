@@ -56,7 +56,7 @@ def blatt_weisskopf(J_R, r2_P, m2_ab, m_a, m_b = -1):
     if (J_R == 0 or J_R > 2):
         return 1;
 
-    p2 = breakup_momentum_p2(m2_ab, m_a, m_b) * r2;
+    p2 = breakup_momentum_p2(m2_ab, m_a, m_b) * r2_P;
     if (J_R == 1):
         return np.sqrt(1.0/(1.0 + p2));
     elif (J_R == 2):

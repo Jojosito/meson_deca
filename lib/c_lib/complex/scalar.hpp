@@ -19,6 +19,7 @@
  *    complex_scalar one(scalar)
  *    complex_scalar one_i(scalar)
  *    complex_scalar mult(complex_scalar, complex_scalar)
+ *    complex_scalar mult(scalar, complex_scalar)
  *    complex_scalar subtract(complex_scalar, complex_scalar)
  */
 
@@ -137,7 +138,7 @@ namespace complex {
 
 
     /**
-     * complex_scalar mult(complex_scalar, complex_scalar)
+     * complex_scalar mult(complex_scalar, complex_scalar) [Overl. op.]
      *
      * Multiplication of two complex numbers.
      *
@@ -151,6 +152,25 @@ namespace complex {
       std::vector<T_res> res(2);
       res[0] = v1[0] * v2[0] - v1[1] * v2[1];
       res[1] = v1[1] * v2[0] + v1[0] * v2[1];
+      return res;
+    }
+
+
+    /**
+     * complex_scalar mult(scalar, complex_scalar) [Overloaded operator]
+     *
+     * Multiplication of a real and a complex number.
+     *
+     * @tparam T0,T1 Scalar types
+     */
+    template <typename T0, typename T1>
+    inline
+    std::vector<typename boost::math::tools::promote_args<T0,T1>::type> 
+    mult(const T0 &v1, const std::vector<T1> &v2) {
+      typedef typename boost::math::tools::promote_args<T0,T1>::type T_res;
+      std::vector<T_res> res(2);
+      res[0] = v1 * v2[0];
+      res[1] = v1 * v2[1];
       return res;
     }
 

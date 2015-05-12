@@ -22,6 +22,9 @@ Reminder: the core Stan C++ code and CmdStan are licensed under new BSD.
 2. Install meson_deca.
   1. From the CmdStan folder, git clone the meson_deca  (type something like `git clone https://github.com/atsipenyuk/meson_deca.git`).
   2. Run `make -s install` from the meson_deca folder.
+  3. Add meson_deca/lib/py_lib to your PYTHONPATH, e.g., add the following
+line to your .bashrc:   
+`export PYTHONPATH=$PYOTHNPATH:<your path to meson_deca>/meson_deca/lib/py_lib`  
 
 ### Example
 
