@@ -38,7 +38,10 @@ model function:
 `f_model(y,theta) = |theta_1 * A_1(y) + theta_2 * A_2(y) +  theta_3 * A_3(y)|`  
 `        = |theta_1 * f_0(1000)(y) + theta_2 * f_0(1200)(y) + theta_3 * 1|^2.`  
 
-You can check how this model is implemented by looking at the file `lib/c_lib/model.hpp` - this is the main file you have to adjust when you want to make your own model. There are several key points:
+This model is implemented in the file `models/d_to_3pi_model_dep/backup/model.hpp`. To use the model, copy this
+file to `lib/c_lib/model.hpp`:  
+` ../meson_deca $ cp models/d_to_3pi_model_dep/backup/model.hpp lib/c_lib`  
+The file `lib/c_lib/model.hpp` is the main file you have to adjust when you want to make your own model. There are several key points:
 
 1) Since we are considering a 3-body-decay, the variable `y` is two-dimensional: `y = (m2_ab, m2_bc)`. In `model.hpp`, this is fixed via the line `NUM_VAR=2`.  
 
