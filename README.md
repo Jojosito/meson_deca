@@ -1,20 +1,49 @@
 # meson_deca
 
-<b>meson_deca</b> is an extension module to Stan. Its purpose is to simplify
-modelling partial wave analysis of heavy meson physics.
+The project <b>meson_deca</b> is an extension module to CmdStan. Its purpose is to simplify
+modelling partial wave analysis of heavy meson physics. We implement such functions as
+Breit-Wigner/Flatte dynamical form factors, Blatt-Weisskopf functions and Zemach tensors
+and bundle them together to model-dependent PWA amplitudes that describe 3- and 4-body 
+meson decays.
+  
+We introduce only a handful of functions to Stan language;
+the core of the module is build from C++ functions that are not
+directly callable from Stan (however, they are templated and 
+can be exposed to Stan parser, should the need present itself).
+
+The module also contains some small python scripts and modules
+that are aimed at debugging the C++ code and plotting/analyzing
+the results of the Stan fitting.
+  
+This code may be interesting to you if you want to:  
+
+ * See an example how to expose your functions to Stan (look at `makefile` and `lib/c_lib/stan_callable`);
+ * Fit a function that looks like "f(y,theta) = |A(y) * theta|^2", where "A(y)" and "theta" are complex vectors (look at `lib/c_lib/model.hpp`);
+ * Use complex numbers in Stan (look at `lib/c_lib/complex` or `lib/c_lib/stan_callable`);
+ * Use some model-dependent PWA functions (templated C++: `lib/c_lib/fct`, Python: `lib/py_lib/fct.py` and `lib/py_lib/res.py`).
+
+### Structure  
+Although the main part of the code is, essentially, a Stan-friendly-templated C++ library,
+it is not build as a (usual) C++ library. All the C++ code is stored in `lib/c_lib`; 
+we do not use forward declarations. We also use the following naming convention: if a
+class is defined in "struct_somename.hpp", it is instantiated in "somename.hpp".
 
 ### Licensing
 
-Reminder: the core Stan C++ code and CmdStan are licensed under new BSD.
+Reminder: the core Stan C++ code and CmdStan are licensed under the new BSD.
 
 ### Dependencies
 
 * libboost-python-dev (`sudo apt-get install libboost-python-dev` or similar should do the trick);
 * PyROOT (you should be able to call `import ROOT` from python shell).
 
+The libboost-python library is used to wrap some C++ functions to a python module (intensely staring
+at some python plots can be very useful to find various pesky bugs). The PyROOT package is used by 
+some utility scripts that convert Stan output to ROOT trees and vice versa.
+
 ### Installation
 
-1. Install the latest CmdStan release (current support: 2.6.2).
+1. Install the latest CmdStan release (currently supported version: 2.6.2).
   1. Download CmdStan from [https://github.com/stan-dev/cmdstan/releases](https://github.com/stan-dev/cmdstan/releases).
   2. Unpack the tarball.
   3. (Optional) From the CmdStan folder, run 'make' on brief tutorial.
@@ -22,9 +51,9 @@ Reminder: the core Stan C++ code and CmdStan are licensed under new BSD.
 2. Install meson_deca.
   1. From the CmdStan folder, git clone the meson_deca  (type something like `git clone https://github.com/atsipenyuk/meson_deca.git`).
   2. Run `make -s install` from the meson_deca folder.
-  3. Add meson_deca/lib/py_lib to your PYTHONPATH, e.g., add the following
+  3. Add meson_deca/lib/py_lib to your PYTHONPATH. For example, add the following
 line to your .bashrc:   
-`export PYTHONPATH=$PYOTHNPATH:<your path to meson_deca>/meson_deca/lib/py_lib`  
+`export PYTHONPATH=$PYTHONPATH:<your path to meson_deca>/meson_deca/lib/py_lib`  
 
 ### Example
 
@@ -38,7 +67,10 @@ model function:
 `f_model(y,theta) = |theta_1 * A_1(y) + theta_2 * A_2(y) +  theta_3 * A_3(y)|`  
 `        = |theta_1 * f_0(1000)(y) + theta_2 * f_0(1200)(y) + theta_3 * 1|^2.`  
 
-You can check how this model is implemented by looking at the file `lib/c_lib/model.hpp` - this is the main file you have to adjust when you want to make your own model. There are several key points:
+This model is implemented in the file `models/d_to_3pi_model_dep/backup/model.hpp`. To use the model, copy this
+file to `lib/c_lib/model.hpp`:  
+` ../meson_deca $ cp models/d_to_3pi_model_dep/backup/model.hpp lib/c_lib`  
+The file `lib/c_lib/model.hpp` is the main file you have to adjust when you want to make your own model. There are several key points:
 
 1) Since we are considering a 3-body-decay, the variable `y` is two-dimensional: `y = (m2_ab, m2_bc)`. In `model.hpp`, this is fixed via the line `NUM_VAR=2`.  
 
