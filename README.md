@@ -1,11 +1,36 @@
 # meson_deca
 
-<b>meson_deca</b> is an extension module to Stan. Its purpose is to simplify
-modelling partial wave analysis of heavy meson physics.
+The project <b>meson_deca</b> is an extension module to CmdStan. Its purpose is to simplify
+modelling partial wave analysis of heavy meson physics. We implement such functions as
+Breit-Wigner/Flatte dynamical form factors, Blatt-Weisskopf functions and Zemach tensors
+and bundle them together to model-dependent PWA amplitudes that describe 3- and 4-body 
+meson decays.
+  
+We introduce only a handful of functions to Stan language;
+the core of the module is build from C++ functions that are not
+directly callable from Stan (however, they are templated and 
+can be exposed to Stan parser, should the need present itself).
+
+The module also contains some small python scripts and modules
+that are aimed at debugging the C++ code and plotting/analyzing
+the results of the Stan fitting.
+  
+This code may be interesting to you if you want to:  
+
+ * See an example how to expose your functions to Stan (look at `makefile` and `lib/c_lib/stan_callable`);
+ * Fit a function that looks like 'f(y,theta) = |A(y) * theta|^2' (look at `lib/c_lib/model.hpp`);
+ * Use complex numbers in Stan (look at `lib/c_lib/complex` or `lib/c_lib/stan_callable`);
+ * Use some model-dependent PWA functions (in templated C++ in `lib/c_lib/fct`, or in Python in `lib/py_lib/fct.py` and in `lib/py_lib/res.py`).
+
+### Structure  
+Although the main part of the code is, essentially, a Stan-friendly-templated C++ library,
+it is not build as a (usual) C++ library. All the C++ code is stored in `lib/c_lib`; 
+we do not use forward declarations. We also use the following naming convention: if a
+class is defined in "struct_somename.hpp", it is instantiated in "somename.hpp".
 
 ### Licensing
 
-Reminder: the core Stan C++ code and CmdStan are licensed under new BSD.
+Reminder: the core Stan C++ code and CmdStan are licensed under the new BSD.
 
 ### Dependencies
 
