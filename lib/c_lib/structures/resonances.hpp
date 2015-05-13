@@ -7,6 +7,8 @@
 #include <meson_deca/lib/c_lib/structures/three_body/flatte.hpp>
 
 // 4 body decay resonances
+#include <meson_deca/lib/c_lib/structures/four_body/D_R1d_R2cd_abcd.hpp>
+#include <meson_deca/lib/c_lib/structures/three_body/flat.hpp>
 
 namespace resonances {
 
@@ -52,6 +54,25 @@ namespace resonances {
   resonances::breit_wigner f2_1270(particles::d, particles::pi,
 				   particles::pi, particles::pi,
 				   particles::f2_1270, 0.1852);
+
+
+  // 4-body resonances
+
+  // Flat
+  resonances::flat_4  flat_4_res(particles::D0, particles::pi,
+				 particles::pi, particles::pi,
+				 particles::pi);
+
+  // Consecutive decays
+  // To be adjusted: width of a1
+  resonances::P_R1d_R2cd_abcd D_a_rho_S_wave(particles::D0, 
+					     particles::pi, particles::pi, 
+					     particles::pi, particles::pi,
+					     1, 0, 1,
+					     particles::a1, 
+					     particles::rho_770, 
+					     0.1, 0.1491); 
+
 }
 
 #endif

@@ -1,37 +1,15 @@
-#ifndef MESON_DECA__LIB__C_LIB__STRUCTURES__STRUCT_FOUR_PARTICLE_DECAY_CHANNEL_HPP
-#define MESON_DECA__LIB__C_LIB__STRUCTURES__STRUCT_FOUR_PARTICLE_DECAY_CHANNEL_HPP
+#ifndef MESON_DECA__LIB__C_LIB__STRUCTURES__FOUR_BODY__D_R1D_R2cd_abcd_HPP
+#define MESON_DECA__LIB__C_LIB__STRUCTURES__FOUR_BODY__D_R1D_R2cd_abcd_HPP
 
 #include <cmath> // sqrt
 
 #include <meson_deca/lib/c_lib/fct.hpp> // Breit-Wigner, Blatt-Weisskopf, etc.
 #include <meson_deca/lib/c_lib/complex.hpp> // Complex numbers
 
-#include <meson_deca/lib/c_lib/structures/struct_particles.hpp> // Particles
+#include <meson_deca/lib/c_lib/structures/four_body/base.hpp> // base class
 
 
 namespace resonances {
-
-  struct decay_base // Base struct for the 4 particle decay
-  {
-    const int l_1; // Orbital angular momentum between R_1 and d
-    const int l_2; // Orbital angular momentum between R_2 and c
-    const int l_3; // Orbital angular momentum between a and b
-
-    // Particle masses and radii are stored in the structure 'particle'
-    const particle P; // Parent particle
-    const particle R_1; // First decay resonance (e.g. a_1)
-    const particle R_2; // 2nd order decay resonance (e.g. rho_0)
-    const particle a; // Final state particles a,b,c,d
-    const particle b;
-    const particle c;
-    const particle d;
-
-    decay_base(int _l_1, int _l_2, int _l_3,
-               particle _P, particle _R_1, particle _R_2,
-               particle _a, particle _b, particle _c, particle _d) :
-      l_1(_l_1), l_2(_l_2), l_3(_l_3), P(_P), R_1(_R_1), R_2(_R_2), a(_a), b(_b), c(_c), d(_d) {};
-  };
-
 
   // Amplitude function for the 4 particle decay
   //   P -> R_1 d -> R_2 c d -> a b c d
@@ -44,15 +22,27 @@ namespace resonances {
   // For detailed description, see
   //   https://www.overleaf.com/2630893ckqcxt#/6945226/
   // or feel free to contact me at arseniy.tsipenyuk@gmail.com.
-  struct P__R1d__R2cd__abcd__bw_decay : resonances::decay_base
+  struct P_R1d_R2cd_abcd : resonances::resonance_base_4
   {
+
+    const int l_1; // Orbital angular momentum between R_1 and d
+    const int l_2; // Orbital angular momentum between R_2 and c
+    const int l_3; // Orbital angular momentum between a and b
+    const particle R_1; // First decay resonance (e.g. a_1)
+    const particle R_2; // 2nd order decay resonance (e.g. rho_0)
     const double W_R_1, W_R_2; // Width of the 1st, 2nd resonance
  
-    P__R1d__R2cd__abcd__bw_decay(int _l_1, int _l_2, int _l_3,
-         particle _P, particle _R_1, particle _R_2,
-	 particle _a, particle _b, particle _c, particle _d,
-	 double _W_R_1, double _W_R_2) : 
-      decay_base(_l_1, _l_2, _l_3, _P, _R_1, _R_2, _a, _b, _c, _d), W_R_1(_W_R_1), W_R_2(_W_R_2) {}; // default constructor
+
+    // Default constructor
+    P__R1d__R2cd__abcd__bw_decay(particle _P, particle _a, particle _b, 
+				 particle _c, particle _d,
+				 int _l_1, int _l_2, int _l_3,  
+				 particle _R_1, particle _R_2,
+				 double _W_R_1, double _W_R_2) : 
+      decay_base(_P,_a, _b, _c, _d), 
+      l_1(_l_1), l_2(_l_2), l_3(_l_3),
+      R_1(_R_1), R_2(_R_2), W_R_1(_W_R_1), W_R_2(_W_R_2) {};
+
 
     // Evaluates the resonance at the given point in the Dalitz plot
     // for the decay P -> ABCD (not symmetrized)
