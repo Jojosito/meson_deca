@@ -18,9 +18,9 @@ the results of the Stan fitting.
 This code may be interesting to you if you want to:  
 
  * See an example how to expose your functions to Stan (look at `makefile` and `lib/c_lib/stan_callable`);
- * Fit a function that looks like 'f(y,theta) = |A(y) * theta|^2' (look at `lib/c_lib/model.hpp`);
+ * Fit a function that looks like "f(y,theta) = |A(y) * theta|^2", where "A(y)" and "theta" are complex vectors (look at `lib/c_lib/model.hpp`);
  * Use complex numbers in Stan (look at `lib/c_lib/complex` or `lib/c_lib/stan_callable`);
- * Use some model-dependent PWA functions (in templated C++ in `lib/c_lib/fct`, or in Python in `lib/py_lib/fct.py` and in `lib/py_lib/res.py`).
+ * Use some model-dependent PWA functions (templated C++: `lib/c_lib/fct`, Python: `lib/py_lib/fct.py` and `lib/py_lib/res.py`).
 
 ### Structure  
 Although the main part of the code is, essentially, a Stan-friendly-templated C++ library,
