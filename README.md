@@ -37,13 +37,13 @@ Reminder: the core Stan C++ code and CmdStan are licensed under the new BSD.
 * libboost-python-dev (`sudo apt-get install libboost-python-dev` or similar should do the trick);
 * PyROOT (you should be able to call `import ROOT` from python shell).
 
-The libboost-python library is used to wrap C++ functions that describe PWA amlitudes to a python module;
-this can be very useful for debugging. The PyROOT package is used by some python scripts that convert
-Stan output to ROOT trees and vice versa.
+The libboost-python library is used to wrap some C++ functions to a python module (intensely staring
+at some python plots can be very useful to find various pesky bugs). The PyROOT package is used by 
+some utility scripts that convert Stan output to ROOT trees and vice versa.
 
 ### Installation
 
-1. Install the latest CmdStan release (current support: 2.6.2).
+1. Install the latest CmdStan release (currently supported version: 2.6.2).
   1. Download CmdStan from [https://github.com/stan-dev/cmdstan/releases](https://github.com/stan-dev/cmdstan/releases).
   2. Unpack the tarball.
   3. (Optional) From the CmdStan folder, run 'make' on brief tutorial.
