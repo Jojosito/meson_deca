@@ -1,0 +1,10 @@
+# Text editor backups #
+#######################
+*~
+
+# Compiled Source #
+*.pyc
+
+# Folders with manual tracking #
+lib/c_lib/py_wrapper/*
+models/*

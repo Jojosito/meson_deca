@@ -6,13 +6,16 @@
 # Install the package.
 ##
 install:
-	# Tell the STAN makefile to use cmdstan (meson_deca/..) 
+	# Tell the STAN makefile to link cmdstan folder 
+	# when building C++ files (this allows us to use
+        # '#include <meson_deca/..>' statements in C++ files) 
 	sed -i "s@-Wall@-isystem $$\(STANAPI_HOME\).. &@" ../makefile; \
 	make reload_libraries
 
 
 ##
-# Reload meson_deca libraries into STAN (heavily dependent on CmdStan version.)
+# Reload meson_deca libraries into STAN (heavily dependent on CmdStan version.
+# Current support: CmdStan 2.6.2.)
 ##
 reload_libraries:
 	# Add library functions to the STAN 'functions.hpp' file.

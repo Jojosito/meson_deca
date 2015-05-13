@@ -8,11 +8,11 @@
 
 #include <meson_deca/lib/c_lib/complex.hpp>
 #include <meson_deca/lib/c_lib/structures/resonances.hpp>
-#include <meson_deca/lib/c_lib/structures/four_particle_decay_channel.hpp>
+
 
 // These variables should be adjusted manually
-const int NUM_RES=2; // Number of PWA resonances
-const int NUM_VAR=5; // Number of independent masses (e.g., 2 for 3-body-decay)
+const int NUM_RES=7; // Number of PWA resonances
+const int NUM_VAR=2; // Number of independent masses (e.g., 2 for 3-body-decay)
 
 namespace stan {
   namespace math {
@@ -33,13 +33,19 @@ namespace stan {
 
         switch (res_id) {
 	// This resonance list must be adjusted manually
-        case 1: return resonances::flat_5d_res.value(y(0,0), y(1,0),
-          y(3,0), y(4,0), y(5,0), particles::d, particles::pi, particles::pi,
-	  particles::pi, particles::pi);
-	  
-        case 2: return resonances::D_a_rho_S_wave.value(y(0,0), y(1,0),
-							y(2,0), y(3,0), 
-							y(4,0));
+        case 1: return resonances::flat_D3pi.value(y(0,0), y(1,0));
+
+        case 2: return resonances::f0_980.value_sym(y(0,0), y(1,0));
+
+        case 3: return resonances::f0_600.value_sym(y(0,0), y(1,0));
+
+        case 4: return resonances::f0_1370.value_sym(y(0,0), y(1,0));
+
+        case 5: return resonances::f0_1500.value_sym(y(0,0), y(1,0));
+
+        case 6: return resonances::rho_770.value_sym(y(0,0), y(1,0));
+
+        case 7: return resonances::f2_1270.value_sym(y(0,0), y(1,0));
 
         default: {
             std::cout << "Fatal error: Unknown resonance occured.";

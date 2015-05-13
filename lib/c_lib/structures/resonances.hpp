@@ -1,60 +1,57 @@
-#ifndef MESON_DECA__LIB__C_LIB__STRUCTURES__RESONANCES_HPP
-#define MESON_DECA__LIB__C_LIB__STRUCTURES__RESONANCES_HPP
+#ifndef MESON_DECA__LIB__C_LIB__STRUCTURES__THREE_BODY__RESONANCES_HPP
+#define MESON_DECA__LIB__C_LIB__STRUCTURES__THREE_BODY__RESONANCES_HPP
 
-#include <meson_deca/lib/c_lib/structures/struct_resonances.hpp>
-// classes resonances::breit_wigner, resonances::flatte
+// 3 body decay resonances
+#include <meson_deca/lib/c_lib/structures/three_body/bw.hpp>
+#include <meson_deca/lib/c_lib/structures/three_body/flat.hpp>
+#include <meson_deca/lib/c_lib/structures/three_body/flatte.hpp>
+
+// 4 body decay resonances
 
 namespace resonances {
 
-  const double math_pi = 3.1415926535;
-  const double deg =  math_pi / 180.;
+  // 3-body decay, Spin 0
+  resonances::flat_3 flat_D3pi(particles::d, particles::pi, particles::pi, 
+			       particles::pi);
 
-  //resonance.non_resonant d_3pi_flat(1.36, 150.1*deg);
+  resonances::breit_wigner toy0_1000(particles::d, particles::pi,
+				     particles::pi, particles::pi,
+				     particles::toy0_1000, 0.1);
 
-  resonances::flat flat_res(0.0);
+  resonances::breit_wigner toy0_1200(particles::d, particles::pi,
+				     particles::pi, particles::pi,
+				     particles::toy0_1200, 0.1);
 
-  resonances::breit_wigner toy0_1000(0, 1.,
-                                   0.1,
-                                   1.0);
+  resonances::flatte toy0_flatte(particles::d, particles::pi,
+				 particles::pi, particles::pi,
+				 particles::toy0_1000, 0.329, 2*0.329);
 
-  resonances::breit_wigner toy0_1200(0, 1.2,
-                                   0.1,
-                                   1.0);
+  resonances::flatte f0_980(particles::d, particles::pi,
+			    particles::pi, particles::pi,
+			    particles::f0_980, 0.329, 2*0.329);
 
-  resonances::flatte toy0_flatte(0, 1.,
-				 0.329, 2*0.329,
-				 1.1);
+  resonances::breit_wigner f0_600(particles::d, particles::pi,
+				  particles::pi, particles::pi,
+				  particles::f0_600, 0.800);
 
-  resonances::flatte f0_980(0, 0.980, // Spin, mass
-                          0.329, 2*0.329, // Width
-                          //1.4, 12.*deg,  // Amplitude
-                          1.);  // Radius
+  resonances::breit_wigner f0_1370(particles::d, particles::pi,
+				   particles::pi, particles::pi,
+				   particles::f0_1370, 0.350);
 
-  resonances::breit_wigner f0_600(0, 0.800, // Spin, mass
-                                0.800,  // Width
-                                //3.7, -3.*deg, // Amplitude
-                                1.); // Radius
+  resonances::breit_wigner f0_1500(particles::d, particles::pi,
+				   particles::pi, particles::pi,
+				   particles::f0_1370, 0.109);
 
-  resonances::breit_wigner f0_1370(0, 1.350,
-                                 0.350,
-                                 //1.3, -21.*deg,
-                                 1.0);
 
-  resonances::breit_wigner f0_1500(0, 1.507,
-                                 0.109,
-                                 //1.1, -44.*deg,
-                                 1.0);
+  // 3-body decay, Spin 1
+  resonances::breit_wigner rho_770(particles::d, particles::pi,
+				   particles::pi, particles::pi,
+				   particles::rho_770, 0.1491);
 
-  resonances::breit_wigner rho_770(1, 0.770,
-                                 0.1491,
-				 //1.0, 0.*deg,
-				  1.0);
-
-  resonances::breit_wigner f2_1270(2, 1.2754,
-                                 0.1852,
-			         //2.1, -123.*deg,
-			         1.0);
-
+  // 3-body decay, Spin 2
+  resonances::breit_wigner f2_1270(particles::d, particles::pi,
+				   particles::pi, particles::pi,
+				   particles::f2_1270, 0.1852);
 }
 
 #endif
