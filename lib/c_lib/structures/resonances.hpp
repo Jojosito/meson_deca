@@ -73,6 +73,14 @@ namespace resonances {
 					     particles::rho_770, 
 					     0.1, 0.1491); 
 
+  resonances::P_R1d_R2cd_abcd D_a_rho_D_wave(particles::D0, 
+					     particles::pi, particles::pi, 
+					     particles::pi, particles::pi,
+					     1, 2, 1,
+					     particles::a1, 
+					     particles::rho_770, 
+					     0.1, 0.1491); 
+
 }
 
 #endif
