@@ -55,6 +55,28 @@ some utility scripts that convert Stan output to ROOT trees and vice versa.
 line to your .bashrc:   
 `export PYTHONPATH=$PYTHONPATH:<your path to meson_deca>/meson_deca/lib/py_lib`  
 
+
+### Usage  
+
+*Main idea.* This module is designed to generate and fit the data according to some distribution
+`f_model(y, theta)`.
+
+1. First, you need a `.stan` model that says: "Please generate/fit me some data according to `f_model`".
+A template of such a file you can find in `lib/stan_lib`. Go ahead and take a look at
+`lib/stan_lib/STAN_data_generator.stan`! (For some other examples, browse `models` folder for `.stan` files.)
+
+2. Each time you will build the `.stan` model, it will look for the function `f_model` in the file
+`lib/c_lib/model.hpp`. Make sure that this function is suited to your needs. For details, see the
+example below, user guide, or browse the `models/*/backup/model.hpp`.
+
+3. If you think about it, the step 2) above is much more complicated and important than the step 1).
+Therefore, when you write your own model, I suggest you proceed as follows.
+  1. Adjust the function `f_model` in the file `lib/c_lib/model.hpp`.
+  2. Call `./initialize_model FOLDER_NAME` from the `meson_deca` folder. This script will copy the templates of 
+the `*.stan` files to `models/FOLDER_NAME` and place a backup copy of `model.hpp` in `models/FOLDER_NAME/backup`.
+After that, adjust the `*.stan` files and build them into executables (the script `build.sh` may save you some time).
+  3. You can use the executables to sample/fit to your hearts desire. There are some python scripts in `utils/` you may use to convert STAN output to .root files and vice versa.
+
 ### Example
 
 (You may want to read `docs/user_guide.pdf` first to get acquainted with the
