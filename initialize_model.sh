@@ -36,6 +36,8 @@ cp $MESON_DECA/lib/c_lib/model.hpp $MESON_DECA/models/$MODEL_FOLDER/backup/model
 # Build python library containing model description
 echo "#### MESON_DECA: Building python modules..."
 cd "$MESON_DECA/lib/c_lib/py_wrapper"
+# Delete old modules
+rm -r build/*
 python setup.py build
 
 # Copy it to the model directory
