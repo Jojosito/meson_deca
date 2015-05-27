@@ -5,6 +5,8 @@
 
 #include <meson_deca/lib/c_lib/fct.hpp>
 #include <meson_deca/lib/c_lib/complex.hpp>
+#include <meson_deca/lib/c_lib/structures/three_body/base.hpp>
+
 
 namespace resonances {
 

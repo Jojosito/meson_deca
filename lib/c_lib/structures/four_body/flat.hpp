@@ -1,20 +1,24 @@
-#ifndef MESON_DECA__LIB__C_LIB__STRUCTURES__THREE_BODY__FLAT_HPP
-#define MESON_DECA__LIB__C_LIB__STRUCTURES__THREE_BODY__FLAT_HPP
+#ifndef MESON_DECA__LIB__C_LIB__STRUCTURES__FOUR_BODY__FLAT_HPP
+#define MESON_DECA__LIB__C_LIB__STRUCTURES__FOUR_BODY__FLAT_HPP
 
 #include <cmath> // sqrt
 
 #include <meson_deca/lib/c_lib/fct.hpp>
 #include <meson_deca/lib/c_lib/complex.hpp>
+#include <meson_deca/lib/c_lib/structures/four_body/base.hpp> // base class
 
 namespace resonances {
 
   // Non-resonant (flat) resonance, 5-dimensional 4 body decay.
   struct flat_4 : resonances::resonance_base_4
   {
+    const particle R_1;
+    const particle R_2;
 
     // Constructor
-    flat_4(particle _P, particle _a, particle _b, particle _c, particle _d) : 
-      resonance_base_4(_P, _a, _b, _c, _d) {};
+    flat_4(particle _P, particle _R_1, particle _R_2,
+	   particle _a, particle _b, particle _c, particle _d) : 
+      resonance_base_4(_P, _a, _b, _c, _d), R_1(_R_1), R_2(_R_2) {};
 
     template <typename T0, typename T1, typename T2, typename T3, typename T4>
     std::vector<typename 
@@ -32,7 +36,8 @@ namespace resonances {
       std::vector<T_res> res(2, 0.0);
 
       if (fct::valid_5d(m2_12, m2_14, m2_23, m2_34, m2_13, m2_123,
-			this->P, this->a, this->b, this->c, this->d) == true)
+			this->P, this->R_1, this->R_2,
+			this->a, this->b, this->c, this->d) == true)
 	{  
 	  res[0] = 1.0;
 	}		
@@ -40,6 +45,7 @@ namespace resonances {
       return res;
     }
   };
+
 }
 
 #endif

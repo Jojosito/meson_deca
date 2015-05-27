@@ -18,7 +18,7 @@
  * which are glued from Blatt-Weisskopf, Breit-Wigner, or other 
  * functions. 
  * 
- * The other files declare these structures. For example, 
+ * The other files instantiate these structures. For example, 
  * 'particles.hpp' initializes pion and kaon particles with
  * members that describe their mass, radius, etc.
  */

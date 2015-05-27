@@ -49,7 +49,7 @@ namespace fct {
     T_res res;
 
     // 0 -> 1 + 1
-    if (J == 1 && j == 1 && l == 0) {
+    if (J == 0 && j == 1 && l == 1) {
       res = (1.0 + z2) * cos2_theta;
     }
 
@@ -59,7 +59,7 @@ namespace fct {
     }
 
     // 1 -> 1 + 2
-    if (J == 1 && j == 1 && l == 0) {
+    if (J == 1 && j == 1 && l == 2) {
       res = 1.0 + (3 + 4 * z2) * cos2_theta;
     }
    

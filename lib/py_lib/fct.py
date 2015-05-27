@@ -48,7 +48,7 @@ def blatt_weisskopf(J_R, r2_P, m2_ab, m_a, m_b = -1):
     Implemented as in: arxiv:1406.6311v2, p.151, eq. (13.2.8).
 
     J_R   : resonance spin
-    r2_P  : parent particle squared radius
+    r2_P  : parent particle s
     m2_ab : Dalitz plot variable (squared mass)
     m_a   : 1st daughter particle mass of m2_ab
     m_b   : 2nd daughter particle mass of m2_ab

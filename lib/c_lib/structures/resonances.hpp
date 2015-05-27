@@ -1,14 +1,7 @@
 #ifndef MESON_DECA__LIB__C_LIB__STRUCTURES__THREE_BODY__RESONANCES_HPP
 #define MESON_DECA__LIB__C_LIB__STRUCTURES__THREE_BODY__RESONANCES_HPP
 
-// 3 body decay resonances
-#include <meson_deca/lib/c_lib/structures/three_body/bw.hpp>
-#include <meson_deca/lib/c_lib/structures/three_body/flat.hpp>
-#include <meson_deca/lib/c_lib/structures/three_body/flatte.hpp>
-
-// 4 body decay resonances
-#include <meson_deca/lib/c_lib/structures/four_body/D_R1d_R2cd_abcd.hpp>
-#include <meson_deca/lib/c_lib/structures/three_body/flat.hpp>
+#include <meson_deca/lib/c_lib/structures/struct_resonances.hpp>
 
 namespace resonances {
 
@@ -58,10 +51,11 @@ namespace resonances {
 
   // 4-body resonances
 
-  // Flat
-  resonances::flat_4  flat_4_res(particles::D0, particles::pi,
+  // Flat for chain 3-body decays
+  resonances::flat_4  flat_4_res(particles::D0, 
+				 particles::a1, particles::rho_770,
 				 particles::pi, particles::pi,
-				 particles::pi);
+				 particles::pi, particles::pi);
 
   // Consecutive decays
   // To be adjusted: width of a1
@@ -73,14 +67,14 @@ namespace resonances {
 					     particles::rho_770, 
 					     0.1, 0.1491); 
 
-  resonances::P_R1d_R2cd_abcd D_a_rho_D_wave(particles::D0, 
+  /*resonances::P_R1d_R2cd_abcd D_a_rho_D_wave(particles::D0, 
 					     particles::pi, particles::pi, 
 					     particles::pi, particles::pi,
 					     1, 2, 1,
 					     particles::a1, 
 					     particles::rho_770, 
 					     0.1, 0.1491); 
-
+  */
 }
-
+ 
 #endif
