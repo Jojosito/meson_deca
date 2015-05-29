@@ -33,7 +33,7 @@ namespace stan {
 
         switch (res_id) {
 	// This resonance list must be adjusted manually
-        case 1: return resonances::flat_res.value(y(0,0), y(1,0));
+        case 1: return resonances::flat_D3pi.value(y(0,0), y(1,0));
 
         case 2: return resonances::f0_980.value_sym(y(0,0), y(1,0));
 
