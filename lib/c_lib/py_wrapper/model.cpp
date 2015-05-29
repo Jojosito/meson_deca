@@ -70,9 +70,12 @@ namespace stan {
             y[i] = boost::python::extract<double>(mapping[i]);
         }
 
-        // Call A_v
-	std::vector<double> res;
-        res = A_v_background_abs2(y);
+        // Call A_v and convert Eigen to std::vector
+	std::vector<double> res(num_background());
+	Eigen::Matrix<double, Eigen::Dynamic, 1> res_eigen = A_v_background_abs2(y);
+	for (int i=0; i<num_background(); i++) {
+	  res[i] = res_eigen(i);
+	}
 
         return res;
      }
@@ -92,6 +95,7 @@ BOOST_PYTHON_MODULE(model)
     //def("A_2", stan::math::A_2, args("y"));
     //def("A_3", stan::math::A_3, args("y"));
     //def("A_r", stan::math::A_r, args("y"));
+    def("num_background", stan::math::num_background);
     def("num_resonances", stan::math::num_resonances);
     def("num_variables", stan::math::num_variables);
 }
