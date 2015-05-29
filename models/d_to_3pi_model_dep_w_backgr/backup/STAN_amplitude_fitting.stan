@@ -39,6 +39,8 @@ transformed parameters {
   // Parameters: some fixed (reference parameters), some free
   // (these will be fitted).
   vector<lower=-5., upper=5.>[num_resonances()] theta[2]; 
+  vector<lower=0., upper=5.>[num_resonances()] theta_background_abs2;
+
   theta[1,1] <- theta_re_flat;
   theta[2,1] <- theta_im_flat;
   theta[1,2] <- theta_re_f0_980;
@@ -54,7 +56,6 @@ transformed parameters {
   theta[1,7] <- theta_re_f2_1270;
   theta[2,7] <- theta_im_f2_1270;
 
-  vector<lower=0., upper=5.>[num_resonances()] theta_background_abs2;
   theta_background_abs2[1] <- theta_background_flat_abs2;
   theta_background_abs2[2] <- theta_background_rho_770_abs2;
 }
@@ -65,7 +66,7 @@ model {
   // Sum over all events
   for (d in 1:D)
     logH <- logH + log( f_model(A_cv_data[d], theta,
-				A_v_background_abs2_data, theta_background_abs2) 
+				A_v_background_abs2_data[d], theta_background_abs2) 
 			/ Norm(theta, I, 
 			       theta_background_abs2, I_background) );
   increment_log_prob(logH);
