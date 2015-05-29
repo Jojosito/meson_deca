@@ -52,6 +52,8 @@ namespace stan {
      }
 
 
+    // Check whether the model has incoherently summed background
+    #ifdef NUM_BACKGR
     /**
      * vector _A_v_backgr_py_wrapper(vector)
      *
@@ -79,6 +81,7 @@ namespace stan {
 
         return res;
      }
+    #endif
 
   }
 }
@@ -91,11 +94,14 @@ BOOST_PYTHON_MODULE(model)
         .def(vector_indexing_suite<std::vector<double> >() );
 
     def("A_cv", stan::math::_A_r_py_wrapper, args("x","y"));
+    #ifdef NUM_BCKGR
     def("A_v_background_abs2", stan::math::_A_v_backgr_py_wrapper, args("x","y"));
-    //def("A_2", stan::math::A_2, args("y"));
-    //def("A_3", stan::math::A_3, args("y"));
-    //def("A_r", stan::math::A_r, args("y"));
+    #endif
+
+
+    #ifdef NUM_BCKGR
     def("num_background", stan::math::num_background);
+    #endif
     def("num_resonances", stan::math::num_resonances);
     def("num_variables", stan::math::num_variables);
 }
