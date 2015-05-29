@@ -123,7 +123,7 @@ namespace resonances {
 
       // Compute p2_d in the rest frame of R_1 by
       // performing a Lorents boost in the direction -v_R_1
-      T_123 v_R_1 = p2_d_rest_frame_of_P / E_R_1_rest_frame_of_P;
+      T_123 v_R_1 = sqrt(p2_d_rest_frame_of_P) / E_R_1_rest_frame_of_P;
       T_123 gamma = 1.0 / sqrt(1.0 - v_R_1 * v_R_1);
 
       T_123 p2_d = gamma * (p2_d_rest_frame_of_P + E_d_rest_frame_of_P * v_R_1);

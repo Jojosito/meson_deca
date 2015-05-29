@@ -11,6 +11,7 @@
 
 namespace stan {
   namespace math {
+
     /**
      * vector _A_cv_py_wrapper(vector)
      *
@@ -25,7 +26,6 @@ namespace stan {
      * - to some python class; in our case, this class is specified further 
      * below and it is called StdVrDouble.
      */
-
      inline
      std::vector<double>
      _A_r_py_wrapper(int y_len, boost::python::list mapping) {
@@ -50,6 +50,33 @@ namespace stan {
         }
         return std_res;
      }
+
+
+    /**
+     * vector _A_v_backgr_py_wrapper(vector)
+     *
+     * Argument wrapper for the function A_v_background_abs2 to call it from python
+     * as A_v_background_abs2.
+     *
+     * Proceed as in the function above with mutatis mutandis siplifications.
+     */
+     inline
+     std::vector<double>
+     _A_v_backgr_py_wrapper(int y_len, boost::python::list mapping) {
+
+        // Convert python list to Eigen::Matrix
+        Eigen::Matrix<double, Eigen::Dynamic, 1> y(y_len);
+        for (int i=0; i<y_len; i++) {
+            y[i] = boost::python::extract<double>(mapping[i]);
+        }
+
+        // Call A_v
+	std::vector<double> res;
+        res = A_v_background_abs2(y);
+
+        return res;
+     }
+
   }
 }
 
@@ -61,6 +88,7 @@ BOOST_PYTHON_MODULE(model)
         .def(vector_indexing_suite<std::vector<double> >() );
 
     def("A_cv", stan::math::_A_r_py_wrapper, args("x","y"));
+    def("A_v_background_abs2", stan::math::_A_v_backgr_py_wrapper, args("x","y"));
     //def("A_2", stan::math::A_2, args("y"));
     //def("A_3", stan::math::A_3, args("y"));
     //def("A_r", stan::math::A_r, args("y"));

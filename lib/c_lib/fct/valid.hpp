@@ -12,7 +12,7 @@
  * FUNCTIONS
  * valid(m2_ab, m2_bc, p, a, b, c) - Check m2_ab, m2_bc for p->abc decay
  * valid(m2_ab, m2_bc, m2_p, m2_a, m2_b, m2_c) - As above, other input type
- * valid_5d()
+ * valid_5d() // WRONG. To be corrected.
  * 
  */
 

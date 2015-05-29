@@ -1,5 +1,5 @@
-#ifndef MESON_DECA__LIB__C_LIB__COMPLEX__COMPLEX_HPP
-#define MESON_DECA__LIB__C_LIB__COMPLEX__COMPLEX_HPP
+#ifndef MESON_DECA__LIB__C_LIB__COMPLEX_HPP
+#define MESON_DECA__LIB__C_LIB__COMPLEX_HPP
 
 #include <meson_deca/lib/c_lib/complex/scalar.hpp>
 #include <meson_deca/lib/c_lib/complex/vector.hpp>

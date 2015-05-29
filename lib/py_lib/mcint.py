@@ -35,6 +35,7 @@ def integral(func, bounds, N=10000):
 
     return [(res1+res2)/2., np.abs(res1-res2)/2]
 
+
 def __eval_integrate(func, m, N_points, n_vars):
     # Generator yielding func evaluated at N_points random points.
     num = 0

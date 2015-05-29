@@ -33,8 +33,8 @@ import numpy as np
 import os
 import sys
 
-# Next line is bad (rework relative path)
-sys.path.insert(1, os.getcwdu() + '/' + "../../lib/py_lib")
+# Next line is bad (rework relative path) - done (ish): py_lib now MUST be in PYTHONPATH
+#sys.path.insert(1, os.getcwdu() + '/' + "../../lib/py_lib")
 import mcint   # Monte Carlo integration
 import convert # Translates A_r results to usable form
 import save    # Convert an array to string
@@ -50,10 +50,16 @@ parser = argparse.ArgumentParser(description='Script to calculate the integral l
 # y1min, y1max, ... yRmin, yRmax
 N = model.num_variables()
 R = model.num_resonances()
+B = model.num_background()
 parser.add_argument('bounds',
-                     nargs=2*N,
-                     type=float,
-                     help="integration bounds.")
+                    nargs=2*N,
+                    required=True,
+                    type=float,
+                    help="integration bounds.")
+parser.add_argument('--background',
+                    default=0,
+                    type=int,
+                    help="Flag: check for background amplitudes.")
 
 args = parser.parse_args()
 
@@ -70,6 +76,16 @@ bounds = [[args.bounds[2*n], args.bounds[2*n+1]] for n in range(N)]
 # Calculate the integral matrix
 I = mcint.integral_A(func, bounds, N=1000000)
 
+# If necessary, calculate background amplitude normalization
+if args.bounds == 1:
+    def func_backgr(y):
+        return convert.VectorForm(model.A_v_background_abs2(B, y))
+    I_background = np.zeros(B, dtype=float)
+    I_background = mcint.integral(func_backgr, bounds, N=1000000)
+
+
 f_py = open('normalization_integral.py', 'w')
 f_py.write('I_ = ' + save.array_to_string(I[0]) + '\n')
+if args.bounds == 1:
+    f_py.write('I_background_ = ' + save.array_to_string(I_background[0]) + '\n')
 f_py.close()
