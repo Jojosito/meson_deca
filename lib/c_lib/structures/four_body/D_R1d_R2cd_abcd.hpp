@@ -75,22 +75,22 @@ namespace resonances {
 
       // Form factor P -> R_1 d
       T_123 F_P = fct::blatt_weisskopf(this->l_1, this->P.r2, this->P.m2, 
-				       m_123, this->d.m) / 
-	fct::blatt_weisskopf(this->l_1, this->P.r2, this->P.m2,
-			     this->R_1.m, this->d.m);
+          m_123, this->d.m) /
+          fct::blatt_weisskopf(this->l_1, this->P.r2, this->P.m2,
+              this->R_1.m, this->d.m);
 
       // Form factor R_1 -> R_2 c
       T_123 F_R_1 = fct::blatt_weisskopf(this->l_2, this->R_1.r2, m2_123,
-					 this->R_2.m, this->c.m) / 
-	// POSSIBLY m_12 instead of R_2.m above and below
-	fct::blatt_weisskopf(this->l_2, this->R_1.r2, this->R_1.m2,
-			     this->R_2.m, this->c.m);
+          this->R_2.m, this->c.m) /
+          // POSSIBLY m_12 instead of R_2.m above and below
+          fct::blatt_weisskopf(this->l_2, this->R_1.r2, this->R_1.m2,
+              this->R_2.m, this->c.m);
 
       // Form factor R_2 -> a b
       T0 F_R_2 = fct::blatt_weisskopf(this->l_3, this->R_2.r2, m2_12,
-				      this->a.m, this->b.m) / 
-	fct::blatt_weisskopf(this->l_3, this->R_2.r2, this->R_2.m2,
-			     this->a.m, this->b.m);
+          this->a.m, this->b.m) /
+          fct::blatt_weisskopf(this->l_3, this->R_2.r2, this->R_2.m2,
+              this->a.m, this->b.m);
 
       // Dynamical (Breit-Wigner) form factor of the first resonance
       T_123 width_R_1 = fct::breit_wigner::relativistic_width(this->R_1.m, W_R_1, 
@@ -144,18 +144,21 @@ namespace resonances {
       //		<< E_R_1_rest_frame_of_P <<  " " << v_R_1
       //		<< gamma <<  " " << p2_d << " " <<  E_d << " " <<  p_c_dot_p_d
       //		<<  " " << cos2_theta  <<  " " << s <<  " " << z2 << "\n";
-      T_res Z_1 = fct::zemach(this->P.J, this->R_1.J, l_1, z2, cos2_theta);
+      const T_res Z_1 = fct::zemach(this->P.J, this->R_1.J, l_1, z2, cos2_theta);
       if (std::isnan(Z_1)==true) {
-	  std::cout << "p2_d_rfo_P : " << p2_d_rest_frame_of_P << "\n";
-	  std::cout << "E_c : " << E_c << "\n";
-	  std::cout << "E_R_1_rfo_P : " << E_R_1_rest_frame_of_P << "\n";
-	  std::cout << "v_R_1 : " << v_R_1 << "\n";
-	  std::cout << "gamma : " << gamma << "\n";
-	  std::cout << "p2_d : " << p2_d << "\n";
-	  std::cout << "E_d : " << E_d << "\n";
-	  std::cout << "s : " << s << "\n";
-	  std::cout << "Z_1 :" << Z_1 << "\n";
-	}
+        std::cout << "p2_d_rfo_P : " << p2_d_rest_frame_of_P << "\n";
+        std::cout << "E_c : " << E_c << "\n";
+        std::cout << "E_R_1_rfo_P : " << E_R_1_rest_frame_of_P << "\n";
+        std::cout << "v_R_1 : " << v_R_1 << "\n";
+        std::cout << "gamma : " << gamma << "\n";
+        std::cout << "p2_d : " << p2_d << "\n";
+        std::cout << "E_d : " << E_d << "\n";
+        std::cout << "s : " << s << "\n";
+        std::cout << "Z_1 :" << Z_1 << "\n";
+      }
+
+      // Todo: debug cos2_theta and z2
+
       // Calculate transformed variables z2, cos2_theta for 
       // the decay R_1 -> R_2 c -> a b c
       // in the rest frame of R_2
@@ -180,7 +183,9 @@ namespace resonances {
       T_123 s_2 = m2_12 + c.m2 + 2.0 * m_12 * E_c_rest_frame_of_R_2;
       T_123 z2_2 = p2_c / s_2;
 
-      T_res Z_2 = fct::zemach(this->R_1.J, this->R_2.J, 
+      // Todo: debug cos2_theta_2 and z2_2
+
+      T_res Z_2 = fct::zemach(this->R_1.J, this->R_2.J,
 			      l_2, z2_2, cos2_theta_2);
 
       // Combine the factors to the decay amplitude
@@ -190,7 +195,10 @@ namespace resonances {
       A = complex::scalar::complex(1.0, 0.0);
       switch (debug) {
       case 1 : return complex::scalar::complex(F_P, 0.0);
-      case 2 : return complex::scalar::complex(F_R_1, 0.0);
+      case 2 : //return complex::scalar::complex(F_R_1, 0.0);
+        return complex::scalar::complex(fct::valid_5d(m2_12, m2_14, m2_23, m2_34, m2_13,
+                this->P,
+                this->a, this->b, this->c, this->d), 0.);
       case 3 : return complex::scalar::complex(F_R_2, 0.0);
       case 4 : return complex::scalar::complex(Z_1, 0.0);
       case 5 : return complex::scalar::complex(Z_2, 0.0);

@@ -104,36 +104,88 @@ namespace fct {
    * from the invariant masses before that. We pass it to save one
    * computation line; maybe it does not really matter (sigh).
    */
-  template <typename T0, typename T1, typename T2, typename T3, typename T4, typename T5>
+  template <typename T0, typename T1, typename T2, typename T3, typename T4>
   bool valid_5d(const T0 &m2_12, const T1 &m2_14, const T2 &m2_23,
-		const T3 &m2_34, const T4& m2_13, const T5 &m2_123,
-		const particle &P, const particle &R_1, const particle &R_2,
+		const T3 &m2_34, const T4& m2_13,
+		const particle &Parent,
 		const particle &a, const particle &b, 
 		const particle &c, const particle &d)
   {
-    typedef typename boost::math::tools::promote_args<T0,T2,T4>::type T_123;
+    typedef typename boost::math::tools::promote_args<T1,T3,T4>::type T_134;
     typedef typename boost::math::tools::promote_args<T0,T1,T2,T3,T4>::type T_res;
 
-    // 3 body decay  P -> R_2 c d
-    if (fct::valid(m2_123, m2_34, P.m2, R_2.m2, c.m2, d.m2) == false) {
-      /*std::cout << "Called valid(" << m2_123
-		<< ", " << m2_34
-		<< ", " << P.m2
-		<< ", " << m2_12
-		<< ", " << c.m2
-		<< ", " << d.m2
-		<< ").\n";*/
+    if ( ( m2_12 < 0 ) ||
+         ( m2_14 < 0 ) ||
+         ( m2_23 < 0 ) ||
+         ( m2_34 < 0 ) ||
+         ( m2_13 < 0 ) ) {
+      std::cout << "a mass^2 is < 0\n";
       return false;
     }
 
-    // 3 body decay R_1 -> a b c
-    if (fct::valid(m2_12, m2_23, R_1.m2, a.m2, b.m2, c.m2) == false) {
-      // verbose debugging
-      //std::cout << "Call 2.";
+//    if (sqrt(m2_12) + sqrt(m2_14) + sqrt(m2_23) + sqrt(m2_34) + sqrt(m2_13) > Parent.m)
+//      return false;
+    
+    if ( m2_12 > (Parent.m - c.m - d.m) * (Parent.m - c.m - d.m) )
       return false;
-    }
+        
+    if ( m2_12 < (a.m + b.m) * (a.m + b.m) )
+      return false;
+        
+    if ( m2_14 < (a.m + d.m) * (a.m + d.m) )
+      return false;
+    
+    const T_res m2_24 = 0.5 * (Parent.m2 - a.m2 - b.m2 - c.m2 - d.m2) - m2_12 - m2_14 - m2_23 - m2_34 - m2_13;
+
+    const T0 M = m2_12;
+    const T0 M2 = M*M;
+
+    const T3 N = m2_34;
+    const T3 N2 = N*N;
+
+    const T_res P = m2_12 + m2_14 + m2_24 - a.m2 - b.m2 - d.m2; // m2_124
+    const T_res P2 = P*P;
+
+    const T_134 Q = m2_13 + m2_14 + m2_34 - a.m2 - c.m2 - d.m2; // m2_134;
+    const T_134 Q2 = Q*Q;
+
+    const T1 R = m2_14;
+    const T1 R2 = R*R;
+
+    const double m = c.m2;
+    const double m2 = m*m;
+
+    const double n = b.m2;
+    const double n2 = n*n;
+    
+    const double p = a.m2;
+    const double p2 = p*p;
+
+    const double q = d.m2;
+    const double q2 = q*q;
+
+    const double r = Parent.m2; // E^2
+    const double r2 = r*r;
+
+    
+    T_res B = (M2*Q2 + N2*P2 + M2*R2 + N2*R2 + P2*Q2) - 2.*(M2*Q*R + N2*P*R + M*N*R2 + M*P*Q2 + N*P2*Q)
+        + 2.*(M*N*P*Q + M*N*P*R + M*N*Q*R + M*P*Q*R + N*P*Q*R) - 2.*(M2*Q*m + N2*P*n + M2*R*m + N2*R*n + M*Q2*q
+            + N*P2*p + M*R2*r + N*R2*r + P2*Q*p + P*Q2*q) - 2.*(M*N*P*m + M*N*Q*n + M*P*R*p + N*Q*R*q + P*Q*R*r)
+        + 2.*(M*N*R*(m + n - 2.*r) + M*P*Q*(m + p - 2.*q) + N*Q*P*(n + q - 2.*p) + Q*R*M*(q + r - 2.*m) + P*R*N*(p + r - 2.*n))
+        + (M2*m2 + N2*n2 + P2*p2 + Q2*q2 + R2*r2) + 2.*(M*N*m*n + M*P*m*p + N*Q*n*q + P*R*p*r + Q*R*q*r)
+        + 2.*(M*Q*(m*q + m*n + q*n + m*p + q*r - p*r) + N*P*(n*p + n*m + p*m + p*r + n*q - q*r) + M*R*(m*r + m*p + r*p + m*n + r*q - n*q)
+            + N*R*(n*r + n*q + r*q + n*m + r*p - m*p) + P*Q*(p*q + p*r + q*r + p*m + q*n - m*n) ) - 2.*(M*m*(m*p + m*n + q*r - p*r - n*q + 2.*n*p)
+            + N*n*(n*m + n*q + p*r - p*m - q*r + 2.*m*q) + P*p*(p*m + p*r + n*q - m*n - q*r + 2.*m*r) + Q*q*(q*n + q*r + m*p - m*n - p*r + 2.*n*r) 
+            + R*r*(r*p + r*q + m*n - m*p - n*q + 2.*p*q) ) + (m2*n2 + m2*p2 + n2*q2 + p2*r2 + q2*r2) - 2.*(m2*n*p + m*n2*q + m*p2*r + n*q2*r + p*q*r2)
+            + 2.*(m*n*p*q + m*n*p*r + m*n*q*r + m*p*q*r + n*p*q*r);
+
+  
+    if (B > 0.)
+      return false;
 
     return true;
+
+
   }
 
 }
