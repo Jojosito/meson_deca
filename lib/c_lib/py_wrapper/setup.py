@@ -20,5 +20,7 @@ setup(name="Model_Dep_Functions",
           include_dirs=[cmdstan_path + "/stan/lib/boost_1.55.0",
                         cmdstan_path + "/stan/lib/eigen_3.2.4",
                         cmdstan_path + "/stan/src",
-                        cmdstan_path])
+                        cmdstan_path],
+          undef_macros=['NDEBUG']
+          )
       ])

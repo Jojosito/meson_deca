@@ -114,28 +114,34 @@ namespace fct {
     typedef typename boost::math::tools::promote_args<T1,T3,T4>::type T_134;
     typedef typename boost::math::tools::promote_args<T0,T1,T2,T3,T4>::type T_res;
 
-    if ( ( m2_12 < 0 ) ||
-         ( m2_14 < 0 ) ||
-         ( m2_23 < 0 ) ||
-         ( m2_34 < 0 ) ||
-         ( m2_13 < 0 ) ) {
-      std::cout << "a mass^2 is < 0\n";
-      return false;
+    // 5D hypercube lower boundaries
+    if ( m2_12 < pow(a.m + b.m, 2) ||
+         m2_14 < pow(a.m + d.m, 2) ||
+         m2_23 < pow(b.m + c.m, 2) ||
+         m2_34 < pow(c.m + d.m, 2) ||
+         m2_13 < pow(a.m + c.m, 2) ) {
+      return 0;
     }
 
-//    if (sqrt(m2_12) + sqrt(m2_14) + sqrt(m2_23) + sqrt(m2_34) + sqrt(m2_13) > Parent.m)
-//      return false;
+    // 5D hypercube upper boundaries
+    if ( m2_12 > pow(Parent.m - c.m - d.m, 2) ||
+         m2_14 > pow(Parent.m - b.m - c.m, 2) ||
+         m2_23 > pow(Parent.m - a.m - d.m, 2) ||
+         m2_34 > pow(Parent.m - a.m - b.m, 2) ||
+         m2_13 > pow(Parent.m - b.m - d.m, 2) ) {
+      return 0;
+    }
+
+    const T_res m2_24 = (Parent.m2 + 2.*(a.m2 + b.m2 + c.m2 + d.m2)) - m2_12 - m2_14 - m2_23 - m2_34 - m2_13;
     
-    if ( m2_12 > (Parent.m - c.m - d.m) * (Parent.m - c.m - d.m) )
-      return false;
-        
-    if ( m2_12 < (a.m + b.m) * (a.m + b.m) )
-      return false;
-        
-    if ( m2_14 < (a.m + d.m) * (a.m + d.m) )
-      return false;
+    if ( sqrt(m2_12) + sqrt(m2_34) > Parent.m ||
+         sqrt(m2_14) + sqrt(m2_23) > Parent.m ||
+         sqrt(m2_13) + sqrt(m2_24) > Parent.m ) {
+      return 0;
+    }
     
-    const T_res m2_24 = 0.5 * (Parent.m2 - a.m2 - b.m2 - c.m2 - d.m2) - m2_12 - m2_14 - m2_23 - m2_34 - m2_13;
+
+
 
     const T0 M = m2_12;
     const T0 M2 = M*M;
@@ -180,11 +186,10 @@ namespace fct {
             + 2.*(m*n*p*q + m*n*p*r + m*n*q*r + m*p*q*r + n*p*q*r);
 
   
-    if (B > 0.)
-      return false;
+    if (B < 0.)
+      return true;
 
-    return true;
-
+    return false;
 
   }
 

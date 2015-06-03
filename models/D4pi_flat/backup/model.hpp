@@ -33,22 +33,14 @@ namespace stan {
 
         switch (res_id) {
 	// This resonance list must be adjusted manually
-        case 1: return resonances::D_a_rho_S_wave.value(1,y(0,0), y(1,0),
-          y(3,0), y(4,0), y(5,0));
-        case 2: return resonances::D_a_rho_S_wave.value(2,y(0,0), y(1,0),
-          y(3,0), y(4,0), y(5,0));
-        case 3: return resonances::D_a_rho_S_wave.value(3,y(0,0), y(1,0),
-          y(3,0), y(4,0), y(5,0));
-        case 4: return resonances::D_a_rho_S_wave.value(4,y(0,0), y(1,0),
-          y(3,0), y(4,0), y(5,0));
-        case 5: return resonances::D_a_rho_S_wave.value(5,y(0,0), y(1,0),
-          y(3,0), y(4,0), y(5,0));
-        case 6: return resonances::D_a_rho_S_wave.value(6,y(0,0), y(1,0),
-          y(3,0), y(4,0), y(5,0));
-        case 7: return resonances::D_a_rho_S_wave.value(7,y(0,0), y(1,0),
-          y(3,0), y(4,0), y(5,0));
-        case 8: return resonances::D_a_rho_S_wave.value(8,y(0,0), y(1,0),
-          y(3,0), y(4,0), y(5,0));
+        case 1: return resonances::D_a_rho_S_wave.value(1, y(0,0), y(1,0), y(2,0), y(3,0), y(4,0));
+        case 2: return resonances::D_a_rho_S_wave.value(2, y(0,0), y(1,0), y(2,0), y(3,0), y(4,0));
+        case 3: return resonances::D_a_rho_S_wave.value(3, y(0,0), y(1,0), y(2,0), y(3,0), y(4,0));
+        case 4: return resonances::D_a_rho_S_wave.value(4, y(0,0), y(1,0), y(2,0), y(3,0), y(4,0));
+        case 5: return resonances::D_a_rho_S_wave.value(5, y(0,0), y(1,0), y(2,0), y(3,0), y(4,0));
+        case 6: return resonances::D_a_rho_S_wave.value(6, y(0,0), y(1,0), y(2,0), y(3,0), y(4,0));
+        case 7: return resonances::D_a_rho_S_wave.value(7, y(0,0), y(1,0), y(2,0), y(3,0), y(4,0));
+        case 8: return resonances::D_a_rho_S_wave.value(8, y(0,0), y(1,0), y(2,0), y(3,0), y(4,0));
 
         default: {
             std::cout << "Fatal error: Unknown resonance occured.";

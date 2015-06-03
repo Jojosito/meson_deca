@@ -9,6 +9,7 @@
 
 #include <meson_deca/lib/c_lib/structures/four_body/base.hpp> // base class
 
+#include <assert.h>
 
 namespace resonances {
 
@@ -64,9 +65,9 @@ namespace resonances {
       m2_123 = m2_12 + m2_13 + m2_23 - a.m2 - b.m2 - c.m2;
       
       // Check whether we are in the physically relevant phase space region
-      //if (fct::valid_5d(m2_12, m2_14, m2_23, m2_34, m2_13, m2_123,
-      //this->P, this->R_1, this->R_2,
-      //this->a, this->b, this->c, this->d) == true) {
+      if ( ! fct::valid_5d(m2_12, m2_14, m2_23, m2_34, m2_13,
+          this->P, this->a, this->b, this->c, this->d) == true)
+        return A; // 0
 
       T0 m_12;
       m_12 = sqrt(m2_12);
@@ -126,7 +127,8 @@ namespace resonances {
       T_123 v_R_1 = sqrt(p2_d_rest_frame_of_P) / E_R_1_rest_frame_of_P;
       T_123 gamma = 1.0 / sqrt(1.0 - v_R_1 * v_R_1);
 
-      T_123 p2_d = gamma * (p2_d_rest_frame_of_P + E_d_rest_frame_of_P * v_R_1);
+      T_123 p_d = gamma * ( sqrt(p2_d_rest_frame_of_P) + E_d_rest_frame_of_P * v_R_1 );
+      T_123 p2_d = p_d*p_d;
       T_123 E_d = sqrt(this->d.m2 + p2_d);
 
       T_res p_c_dot_p_d = (-0.5) * (m2_34 - c.m2 - d.m2 - 2.0 * E_c * E_d);
@@ -135,16 +137,25 @@ namespace resonances {
       T_123 s = m2_123 + d.m2 + 2.0 * m_123 * E_d;
       T_123 z2 = p2_d / s;
 
-      //std::cout << "p2_c " << "E_c " << "p2_d_rest_frame_of_P "
-      //	<< "E_R_1_rest_frame_of_P  " << "v_R_1 "
-      //	<< "gamma " << "p2_d " << "E_d " << "p_c_dot_p_d "
-      //	<< "cos2_theta " << "s " << "z2 \n";
-      //
-      //std::cout << p2_c << " " << E_c <<  " " << p2_d_rest_frame_of_P
-      //		<< E_R_1_rest_frame_of_P <<  " " << v_R_1
-      //		<< gamma <<  " " << p2_d << " " <<  E_d << " " <<  p_c_dot_p_d
-      //		<<  " " << cos2_theta  <<  " " << s <<  " " << z2 << "\n";
-      const T_res Z_1 = fct::zemach(this->P.J, this->R_1.J, l_1, z2, cos2_theta);
+      /*std::cout << "m2_34 \t\t" << "p2_c \t\t" << "E_c \t\t" << "p2_d_rest_frame_of_P \t"
+      	<< "E_R_1_rest_frame_of_P  \t" << "v_R_1 \t\t"
+      	<< "gamma \t" << "p2_d \t\t" << "E_d \t\t" << "p_c_dot_p_d \t"
+      	<< "cos2_theta \t" << "s \t" << "z2 \n";
+
+      std::cout << m2_34 << "\t" << p2_c << " \t" << E_c <<  " \t" << p2_d_rest_frame_of_P <<  " \t\t"
+      		<< E_R_1_rest_frame_of_P <<  " \t\t" << v_R_1 <<  " \t"
+      		<< gamma <<  " \t" << p2_d << " \t" <<  E_d << " \t" <<  p_c_dot_p_d
+      		<<  " \t" << cos2_theta  <<  " \t" << s <<  " \t" << z2 << "\n";
+*/
+      //assert(cos2_theta >= 0. && cos2_theta <= 1.);
+      //assert(z2 >= 0. && z2 <= 1.);
+
+      T_res Z_1(0);
+      if (p2_c >= 0 && p2_d_rest_frame_of_P >= 0)
+        Z_1 = fct::zemach(this->P.J, this->R_1.J, l_1, z2, cos2_theta);
+
+      //assert(Z_1 >= 0. && Z_1 <= 2.);
+
       if (std::isnan(Z_1)==true) {
         std::cout << "p2_d_rfo_P : " << p2_d_rest_frame_of_P << "\n";
         std::cout << "E_c : " << E_c << "\n";
@@ -185,8 +196,9 @@ namespace resonances {
 
       // Todo: debug cos2_theta_2 and z2_2
 
-      T_res Z_2 = fct::zemach(this->R_1.J, this->R_2.J,
-			      l_2, z2_2, cos2_theta_2);
+      T_res Z_2(0);
+      if (p2_b >= 0 && p2_c_rest_frame_of_R_2 >= 0)
+        Z_2 = fct::zemach(this->R_1.J, this->R_2.J, l_2, z2_2, cos2_theta_2);
 
       // Combine the factors to the decay amplitude
       A = complex::scalar::mult(F_P * F_R_1 * Z_1 * F_R_2  * Z_2,

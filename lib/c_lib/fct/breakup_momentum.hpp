@@ -54,7 +54,7 @@ namespace fct {
       if (p2 >= 0)
         res = complex::scalar::complex(sqrt(p2), 0.);
       else
-	res = complex::scalar::complex(0., sqrt(-p2));
+        res = complex::scalar::complex(0., sqrt(-p2));
 
       return res;
     }
